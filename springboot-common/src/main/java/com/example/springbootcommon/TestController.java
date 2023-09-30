@@ -8,6 +8,6 @@ public class TestController {
 
     @GetMapping("/")
     public String testApi(){
-        return "Hello API";
+        return "Hello API HJW";
     }
 }
