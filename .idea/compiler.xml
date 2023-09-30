@@ -11,10 +11,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="springboot-common" target="17" />
       <module name="springboot-common.springboot-core-dms.main" target="17" />
       <module name="springboot-common.springboot-core-dms.test" target="17" />
-      <module name="springboot-core-dms" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
