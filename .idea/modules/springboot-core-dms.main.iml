@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../springboot-core-dms/build/generated/sources/annotationProcessor/java/main" isTestSource="false" generated="true" />
     </content>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17">
     <output url="file://$MODULE_DIR$/../../springboot-core-dms/build/classes/java/main" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../springboot-core-dms/build/generated/sources/annotationProcessor/java/main">
