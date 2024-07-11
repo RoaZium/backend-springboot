@@ -3,15 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/backend-springboot.iml" filepath="$PROJECT_DIR$/backend-springboot.iml" />
-<<<<<<< Updated upstream
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-common.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-common.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-common.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-core-dms.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-core-dms.iml" />
-=======
->>>>>>> Stashed changes
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-core-dms.main.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-core-dms.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/springboot-core-dms.test.iml" filepath="$PROJECT_DIR$/.idea/modules/springboot-core-dms.test.iml" />
     </modules>
   </component>
 </project>
