@@ -3,11 +3,10 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/springboot-core-common" />
-        <option name="gradleJvm" value="jbr-17" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/springboot-common" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/springboot-core-common" />
+            <option value="$PROJECT_DIR$/springboot-common" />
           </set>
         </option>
       </GradleProjectSettings>
