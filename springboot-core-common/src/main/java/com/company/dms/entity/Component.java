@@ -8,7 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "dms_component")
+@Table(name = "component")
 @Getter
 @Setter
 public class Component {

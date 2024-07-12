@@ -4,11 +4,13 @@ import com.company.dms.dto.ComponentDto;
 import com.company.dms.entity.Component;
 import com.company.dms.repository.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ComponentService {
@@ -21,10 +23,13 @@ public class ComponentService {
     }
 
     @Transactional(readOnly = true)
-    public List<ComponentDto> getComponentsByCategory(String category) {
-        return componentRepository.findByCategory(category).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public Page<ComponentDto> getAllComponents(Pageable pageable) {
+        return componentRepository.findAll(pageable).map(this::convertToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<ComponentDto> getComponentById(String id) {
+        return componentRepository.findById(id).map(this::convertToDto);
     }
 
     @Transactional
@@ -45,6 +50,11 @@ public class ComponentService {
 
     private Component convertToEntity(ComponentDto componentDto) {
         Component component = new Component();
+        if (componentDto.getId() != null) {
+            component.setId(componentDto.getId());
+        } else {
+            component.setId(UUID.randomUUID().toString());  // 새로운 UUID 생성
+        }
         component.setCategory(componentDto.getCategory());
         component.setName(componentDto.getName());
         component.setPropertiesJson(componentDto.getPropertiesJson());
