@@ -1,5 +1,6 @@
 package com.company.dms.component;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/dms/components")
+@Tag(name = "user", description = "User Management APIs")
 public class ComponentController {
 
     private final ComponentService componentService;
