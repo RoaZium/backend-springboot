@@ -1,4 +1,4 @@
-package com.company.dms.dto;
+package com.company.dms.component;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

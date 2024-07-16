@@ -1,4 +1,4 @@
-package com.company.dms.entity;
+package com.company.dms.component;
 
 import jakarta.persistence.*;
 import lombok.Getter;

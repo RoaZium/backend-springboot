@@ -1,6 +1,6 @@
-package com.company.dms.repository;
+package com.company.dms.component;
 
-import com.company.dms.entity.Component;
+import com.company.dms.component.Component;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

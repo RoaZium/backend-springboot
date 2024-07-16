@@ -1,8 +1,8 @@
-package com.company.dms.service;
+package com.company.dms.component;
 
-import com.company.dms.dto.ComponentDto;
-import com.company.dms.entity.Component;
-import com.company.dms.repository.ComponentRepository;
+import com.company.dms.component.ComponentDto;
+import com.company.dms.component.Component;
+import com.company.dms.component.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
