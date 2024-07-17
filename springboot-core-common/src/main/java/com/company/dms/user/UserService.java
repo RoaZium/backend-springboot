@@ -24,6 +24,19 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
+        // Validate input
+        if (userDto.getEmail() == null || userDto.getPassword() == null) {
+            throw new IllegalArgumentException("Email and password are required");
+        }
+
+        // Check if email or phone number already exists
+        if (userRepository.findByEmail(userDto.getEmail()) != null) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+        if (userRepository.findByPhoneNumber(userDto.getPhoneNumber()) != null) {
+            throw new IllegalArgumentException("Phone number already exists");
+        }
+
         User user = convertToEntity(userDto);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
@@ -64,6 +77,7 @@ public class UserService {
     private User convertToEntity(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
+        user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setFirstName(userDto.getFirstName());

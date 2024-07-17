@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(length = 36)
     private String id;
 

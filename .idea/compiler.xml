@@ -11,5 +11,8 @@
         <module name="springboot-core-common.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springboot-common" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

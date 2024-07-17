@@ -37,4 +37,16 @@ public class ComponentController {
         ComponentDto createdComponent = componentService.createComponent(componentDto);
         return ResponseEntity.ok(createdComponent);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ComponentDto> updateComponent(@PathVariable String id, @RequestBody ComponentDto componentDto) {
+        ComponentDto updatedComponent = componentService.updateComponent(id, componentDto);
+        return ResponseEntity.ok(updatedComponent);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteComponent(@PathVariable String id) {
+        componentService.deleteComponent(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -22,42 +22,56 @@ public class ComponentService {
         this.componentRepository = componentRepository;
     }
 
-    @Transactional(readOnly = true)
     public Page<ComponentDto> getAllComponents(Pageable pageable) {
-        return componentRepository.findAll(pageable).map(this::convertToDto);
+        Page<Component> components = componentRepository.findAll(pageable);
+        return components.map(this::convertToDto);
     }
 
-    @Transactional(readOnly = true)
     public Optional<ComponentDto> getComponentById(String id) {
         return componentRepository.findById(id).map(this::convertToDto);
     }
 
-    @Transactional
     public ComponentDto createComponent(ComponentDto componentDto) {
         Component component = convertToEntity(componentDto);
+        component.setId(UUID.randomUUID().toString());
         Component savedComponent = componentRepository.save(component);
         return convertToDto(savedComponent);
     }
 
-    private ComponentDto convertToDto(Component component) {
-        return new ComponentDto(
-                component.getId(),
-                component.getCategory(),
-                component.getName(),
-                component.getPropertiesJson()
-        );
+    public ComponentDto updateComponent(String id, ComponentDto componentDto) {
+        Component component = componentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Component not found"));
+        updateComponentFromDto(component, componentDto);
+        Component updatedComponent = componentRepository.save(component);
+        return convertToDto(updatedComponent);
     }
 
-    private Component convertToEntity(ComponentDto componentDto) {
+    public void deleteComponent(String id) {
+        componentRepository.deleteById(id);
+    }
+
+    private ComponentDto convertToDto(Component component) {
+        ComponentDto dto = new ComponentDto();
+        dto.setId(component.getId());
+        dto.setCategory(component.getCategory());
+        dto.setName(component.getName());
+        dto.setPropertiesJson(component.getPropertiesJson());
+        dto.setCreatedAt(component.getCreatedAt());
+        dto.setUpdatedAt(component.getUpdatedAt());
+        return dto;
+    }
+
+    private Component convertToEntity(ComponentDto dto) {
         Component component = new Component();
-        if (componentDto.getId() != null) {
-            component.setId(componentDto.getId());
-        } else {
-            component.setId(UUID.randomUUID().toString());  // 새로운 UUID 생성
-        }
-        component.setCategory(componentDto.getCategory());
-        component.setName(componentDto.getName());
-        component.setPropertiesJson(componentDto.getPropertiesJson());
+        component.setCategory(dto.getCategory());
+        component.setName(dto.getName());
+        component.setPropertiesJson(dto.getPropertiesJson());
         return component;
+    }
+
+    private void updateComponentFromDto(Component component, ComponentDto dto) {
+        component.setCategory(dto.getCategory());
+        component.setName(dto.getName());
+        component.setPropertiesJson(dto.getPropertiesJson());
     }
 }
