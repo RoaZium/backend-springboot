@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/dms/components")
-@Tag(name = "user", description = "User Management APIs")
+@Tag(name = "Components", description = "Component Management APIs")
 public class ComponentController {
 
     private final ComponentService componentService;

@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/presentations")
-@Tag(name = "presentations", description = "Presentations Management APIs")
+@Tag(name = "Presentations", description = "Presentations Management APIs")
 public class PresentationController {
 
     @Autowired
