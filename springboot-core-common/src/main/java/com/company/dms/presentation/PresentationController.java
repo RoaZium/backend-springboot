@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/presentations")
+@RequestMapping("/api/v1/presentations")
 @Tag(name = "Presentations", description = "Presentations Management APIs")
 public class PresentationController {
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/slides")
+@RequestMapping("/api/v1/slides")
 @Tag(name = "Slides", description = "Slides Management APIs")
 public class SlideController {
 

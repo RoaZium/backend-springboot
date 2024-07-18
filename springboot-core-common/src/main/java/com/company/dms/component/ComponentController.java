@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/dms/components")
+@RequestMapping("/api/v1/components")
 @Tag(name = "Components", description = "Component Management APIs")
 public class ComponentController {
 
