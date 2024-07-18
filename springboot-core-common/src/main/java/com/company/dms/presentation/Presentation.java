@@ -4,13 +4,15 @@ import com.company.dms.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "presentation")
 @Data
 public class Presentation {
     @Id
-    @Column(length = 36)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private String id;
 
     @ManyToOne

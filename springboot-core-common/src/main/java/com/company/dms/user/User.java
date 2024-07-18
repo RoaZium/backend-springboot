@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(length = 36)
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private String id;
 
     @Column(unique = true)

@@ -5,13 +5,15 @@ import com.company.dms.presentation.Presentation;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "slide")
 @Data
 public class Slide {
     @Id
-    @Column(length = 36)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private String id;
 
     @ManyToOne
