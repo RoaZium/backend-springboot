@@ -33,16 +33,30 @@ public class SlideService {
         return convertToDto(slide);
     }
 
+
     public SlideDto createSlide(SlideDto slideDto) {
+        if (slideDto.getUserId() == null) {
+            throw new IllegalArgumentException("User ID is required to create a slide");
+        }
+
+        User user = userRepository.findById(slideDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + slideDto.getUserId()));
+
         Slide slide = convertToEntity(slideDto);
+        slide.setUser(user);
+
         if (slide.getId() == null) {
             slide.setId(UUID.randomUUID());
         }
+
         slide = slideRepository.save(slide);
         return convertToDto(slide);
     }
 
     public SlideDto updateSlide(UUID id, SlideDto slideDto) {
+        if (slideDto.getUserId() == null) {
+            throw new IllegalArgumentException("User ID is required");
+        }
         Slide existingSlide = slideRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Slide not found"));
 
@@ -50,6 +64,16 @@ public class SlideService {
         existingSlide.setMenuOrder(slideDto.getMenuOrder());
         existingSlide.setPresentationOrder(slideDto.getPresentationOrder());
         existingSlide.setPropertiesJson(slideDto.getPropertiesJson());
+
+        User user = userRepository.findById(slideDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        existingSlide.setUser(user);
+
+        if (slideDto.getPresentationId() != null) {
+            Presentation presentation = presentationRepository.findById(slideDto.getPresentationId())
+                    .orElseThrow(() -> new RuntimeException("Presentation not found"));
+            existingSlide.setPresentation(presentation);
+        }
 
         existingSlide = slideRepository.save(existingSlide);
         return convertToDto(existingSlide);
@@ -63,7 +87,7 @@ public class SlideService {
         SlideDto slideDto = new SlideDto();
         slideDto.setId(slide.getId());
         slideDto.setUserId(slide.getUser().getId());
-        slideDto.setPresentationId(slide.getPresentation().getId());
+        slideDto.setPresentationId(slide.getPresentation() != null ? slide.getPresentation().getId() : null);
         slideDto.setName(slide.getName());
         slideDto.setMenuOrder(slide.getMenuOrder());
         slideDto.setPresentationOrder(slide.getPresentationOrder());
