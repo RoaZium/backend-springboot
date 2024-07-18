@@ -1,8 +1,5 @@
 package com.company.dms.component;
 
-import com.company.dms.component.ComponentDto;
-import com.company.dms.component.Component;
-import com.company.dms.component.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,18 +24,19 @@ public class ComponentService {
         return components.map(this::convertToDto);
     }
 
-    public Optional<ComponentDto> getComponentById(String id) {
+    public Optional<ComponentDto> getComponentById(UUID id) {
         return componentRepository.findById(id).map(this::convertToDto);
     }
 
+    @Transactional
     public ComponentDto createComponent(ComponentDto componentDto) {
         Component component = convertToEntity(componentDto);
-        component.setId(UUID.randomUUID().toString());
         Component savedComponent = componentRepository.save(component);
         return convertToDto(savedComponent);
     }
 
-    public ComponentDto updateComponent(String id, ComponentDto componentDto) {
+    @Transactional
+    public ComponentDto updateComponent(UUID id, ComponentDto componentDto) {
         Component component = componentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Component not found"));
         updateComponentFromDto(component, componentDto);
@@ -46,7 +44,8 @@ public class ComponentService {
         return convertToDto(updatedComponent);
     }
 
-    public void deleteComponent(String id) {
+    @Transactional
+    public void deleteComponent(UUID id) {
         componentRepository.deleteById(id);
     }
 

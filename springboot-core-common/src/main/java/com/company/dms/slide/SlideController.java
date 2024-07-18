@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/slides")
@@ -21,7 +22,7 @@ public class SlideController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SlideDto> getSlideById(@PathVariable String id) {
+    public ResponseEntity<SlideDto> getSlideById(@PathVariable UUID id) {
         return ResponseEntity.ok(slideService.getSlideById(id));
     }
 
@@ -31,12 +32,12 @@ public class SlideController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SlideDto> updateSlide(@PathVariable String id, @RequestBody SlideDto slideDto) {
+    public ResponseEntity<SlideDto> updateSlide(@PathVariable UUID id, @RequestBody SlideDto slideDto) {
         return ResponseEntity.ok(slideService.updateSlide(id, slideDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSlide(@PathVariable String id) {
+    public ResponseEntity<Void> deleteSlide(@PathVariable UUID id) {
         slideService.deleteSlide(id);
         return ResponseEntity.noContent().build();
     }

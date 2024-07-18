@@ -7,8 +7,8 @@ import com.company.dms.presentation.PresentationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
-import java.time.LocalDateTime;
 
 @Service
 public class SlideService {
@@ -27,7 +27,7 @@ public class SlideService {
                 .collect(Collectors.toList());
     }
 
-    public SlideDto getSlideById(String id) {
+    public SlideDto getSlideById(UUID id) {
         Slide slide = slideRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Slide not found"));
         return convertToDto(slide);
@@ -35,13 +35,14 @@ public class SlideService {
 
     public SlideDto createSlide(SlideDto slideDto) {
         Slide slide = convertToEntity(slideDto);
-        slide.setCreatedAt(LocalDateTime.now());
-        slide.setUpdatedAt(LocalDateTime.now());
+        if (slide.getId() == null) {
+            slide.setId(UUID.randomUUID());
+        }
         slide = slideRepository.save(slide);
         return convertToDto(slide);
     }
 
-    public SlideDto updateSlide(String id, SlideDto slideDto) {
+    public SlideDto updateSlide(UUID id, SlideDto slideDto) {
         Slide existingSlide = slideRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Slide not found"));
 
@@ -49,13 +50,12 @@ public class SlideService {
         existingSlide.setMenuOrder(slideDto.getMenuOrder());
         existingSlide.setPresentationOrder(slideDto.getPresentationOrder());
         existingSlide.setPropertiesJson(slideDto.getPropertiesJson());
-        existingSlide.setUpdatedAt(LocalDateTime.now());
 
         existingSlide = slideRepository.save(existingSlide);
         return convertToDto(existingSlide);
     }
 
-    public void deleteSlide(String id) {
+    public void deleteSlide(UUID id) {
         slideRepository.deleteById(id);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/presentations")
@@ -21,7 +22,7 @@ public class PresentationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PresentationDto> getPresentationById(@PathVariable String id) {
+    public ResponseEntity<PresentationDto> getPresentationById(@PathVariable UUID id) {
         return ResponseEntity.ok(presentationService.getPresentationById(id));
     }
 
@@ -31,12 +32,12 @@ public class PresentationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PresentationDto> updatePresentation(@PathVariable String id, @RequestBody PresentationDto presentationDto) {
+    public ResponseEntity<PresentationDto> updatePresentation(@PathVariable UUID id, @RequestBody PresentationDto presentationDto) {
         return ResponseEntity.ok(presentationService.updatePresentation(id, presentationDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePresentation(@PathVariable String id) {
+    public ResponseEntity<Void> deletePresentation(@PathVariable UUID id) {
         presentationService.deletePresentation(id);
         return ResponseEntity.noContent().build();
     }

@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/dms/components")
 @Tag(name = "Components", description = "Component Management APIs")
@@ -26,7 +28,7 @@ public class ComponentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ComponentDto> getComponentById(@PathVariable String id) {
+    public ResponseEntity<ComponentDto> getComponentById(@PathVariable UUID id) {
         return componentService.getComponentById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -39,13 +41,13 @@ public class ComponentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ComponentDto> updateComponent(@PathVariable String id, @RequestBody ComponentDto componentDto) {
+    public ResponseEntity<ComponentDto> updateComponent(@PathVariable UUID id, @RequestBody ComponentDto componentDto) {
         ComponentDto updatedComponent = componentService.updateComponent(id, componentDto);
         return ResponseEntity.ok(updatedComponent);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComponent(@PathVariable String id) {
+    public ResponseEntity<Void> deleteComponent(@PathVariable UUID id) {
         componentService.deleteComponent(id);
         return ResponseEntity.noContent().build();
     }
