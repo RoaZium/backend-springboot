@@ -13,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ComponentDto {
     private UUID id;
+    private UUID slideId;
     private String category;
     private String name;
     private String propertiesJson;
