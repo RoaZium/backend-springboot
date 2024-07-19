@@ -1,5 +1,6 @@
 package com.company.dms.presentation;
 
+import com.company.dms.slide.Slide;
 import com.company.dms.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +36,9 @@ public class Presentation {
 
     @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
     private String propertiesJson;
+
+    @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Slide> slides = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

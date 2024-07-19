@@ -1,9 +1,7 @@
-package com.company.dms.slide;
+package com.company.dms.section;
 
-import com.company.dms.component.Component;
+import com.company.dms.slide.Slide;
 import com.company.dms.user.User;
-import com.company.dms.presentation.Presentation;
-import com.company.dms.section.Section;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,37 +13,29 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "slide")
+@Table(name = "section", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"users_id", "menu_order"})
+})
 @Data
-public class Slide {
+public class Section {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "presentation_id")
-    private Presentation presentation;
-
-    @ManyToOne
-    @JoinColumn(name = "section_id")
-    private Section section;
-
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "menu_order", nullable = false)
     private int menuOrder;
 
-    @Column(name = "presentation_order")
-    private int presentationOrder;
-
-    @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
-    private String propertiesJson;
+    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Slide> slides = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -54,7 +44,4 @@ public class Slide {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "slide", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Component> components = new ArrayList<>();
 }
