@@ -11,10 +11,15 @@ import java.time.LocalDateTime;
 @Service
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
@@ -33,10 +38,10 @@ public class UserService {
             throw new IllegalArgumentException("Email, password, and username are required");
         }
 
-        if (userRepository.findByEmail(userDto.getEmail()) != null) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
-        if (userRepository.findByUsername(userDto.getUsername()) != null) {
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
 
