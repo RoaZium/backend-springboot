@@ -12,7 +12,7 @@ public class UserDto {
     private String username;
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    private String passwordHash;
     private String firstName;
     private String lastName;
     private String phoneNumber;

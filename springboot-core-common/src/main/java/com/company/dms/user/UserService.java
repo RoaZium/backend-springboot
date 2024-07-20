@@ -1,8 +1,8 @@
 package com.company.dms.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -11,15 +11,7 @@ import java.time.LocalDateTime;
 @Service
 public class UserService {
     @Autowired
-    private final UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
@@ -34,19 +26,17 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
-        if (userDto.getEmail() == null || userDto.getPassword() == null || userDto.getUsername() == null) {
-            throw new IllegalArgumentException("Email, password, and username are required");
+        if (userDto.getEmail() == null || userDto.getUsername() == null) {
+            throw new IllegalArgumentException("Email and username are required");
         }
-
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
         if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
-
         User user = convertToEntity(userDto);
-        user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
+        user.setPasswordHash(null);  // Set password hash to null
         user.setActive(true);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
@@ -57,7 +47,6 @@ public class UserService {
     public UserDto updateUser(UUID id, UserDto userDto) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         existingUser.setEmail(userDto.getEmail());
         existingUser.setUsername(userDto.getUsername());
         existingUser.setPhoneNumber(userDto.getPhoneNumber());
@@ -65,11 +54,6 @@ public class UserService {
         existingUser.setLastName(userDto.getLastName());
         existingUser.setBirthDate(userDto.getBirthDate());
         existingUser.setActive(userDto.isActive());
-
-        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-            existingUser.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
-        }
-
         existingUser.setUpdatedAt(LocalDateTime.now());
         existingUser = userRepository.save(existingUser);
         return convertToDto(existingUser);
@@ -84,10 +68,6 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setLastLoginAt(LocalDateTime.now());
         userRepository.save(user);
-    }
-
-    public boolean verifyPassword(String rawPassword, String encodedPassword) {
-        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
     private UserDto convertToDto(User user) {
