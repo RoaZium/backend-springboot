@@ -1,41 +1,33 @@
 package com.company.dms.slide;
 
-import com.company.dms.component.Component;
-import com.company.dms.user.User;
-import com.company.dms.presentation.Presentation;
-import com.company.dms.section.Section;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "slide")
 @Data
 public class Slide {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "users_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
-    @ManyToOne
-    @JoinColumn(name = "presentation_id")
-    private Presentation presentation;
+    @Column(name = "presentation_id")
+    private UUID presentationId;
 
-    @ManyToOne
-    @JoinColumn(name = "section_id")
-    private Section section;
+    @Column(name = "section_id")
+    private UUID sectionId;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "menu_order", nullable = false)
@@ -54,7 +46,4 @@ public class Slide {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "slide", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Component> components = new ArrayList<>();
 }

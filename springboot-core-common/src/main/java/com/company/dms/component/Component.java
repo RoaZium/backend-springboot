@@ -1,10 +1,7 @@
 package com.company.dms.component;
 
-import com.company.dms.slide.Slide;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,9 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "component")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class Component {
 
     @Id
@@ -23,9 +18,8 @@ public class Component {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "slide_id", nullable = false)
-    private Slide slide;
+    @Column(name = "slide_id", nullable = false)
+    private UUID slideId;
 
     @Column(name = "category", nullable = false, length = 20)
     private String category;
