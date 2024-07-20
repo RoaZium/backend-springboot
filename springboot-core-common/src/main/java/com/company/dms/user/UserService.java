@@ -1,16 +1,20 @@
 package com.company.dms.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.time.LocalDateTime;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
@@ -25,20 +29,19 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
-        // Validate input
-        if (userDto.getEmail() == null || userDto.getPassword() == null) {
-            throw new IllegalArgumentException("Email and password are required");
+        if (userDto.getEmail() == null || userDto.getUsername() == null || userDto.getPassword() == null) {
+            throw new IllegalArgumentException("Email, username and password are required");
         }
 
-        // Check if email or phone number already exists
         if (userRepository.findByEmail(userDto.getEmail()) != null) {
             throw new IllegalArgumentException("Email already exists");
         }
-        if (userRepository.findByPhoneNumber(userDto.getPhoneNumber()) != null) {
-            throw new IllegalArgumentException("Phone number already exists");
+        if (userRepository.findByUsername(userDto.getUsername()) != null) {
+            throw new IllegalArgumentException("Username already exists");
         }
 
         User user = convertToEntity(userDto);
+        user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
@@ -50,10 +53,16 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         existingUser.setEmail(userDto.getEmail());
-        existingUser.setPhoneNumber(userDto.getPhoneNumber());
+        existingUser.setUsername(userDto.getUsername());
         existingUser.setFirstName(userDto.getFirstName());
         existingUser.setLastName(userDto.getLastName());
+        existingUser.setPhoneNumber(userDto.getPhoneNumber());
+        existingUser.setBirthDate(userDto.getBirthDate());
         existingUser.setUpdatedAt(LocalDateTime.now());
+
+        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+            existingUser.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
+        }
 
         existingUser = userRepository.save(existingUser);
         return convertToDto(existingUser);
@@ -63,13 +72,24 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void updateLastLogin(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setLastLoginAt(LocalDateTime.now());
+        userRepository.save(user);
+    }
+
     private UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
+        userDto.setUsername(user.getUsername());
         userDto.setEmail(user.getEmail());
-        userDto.setPhoneNumber(user.getPhoneNumber());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
+        userDto.setPhoneNumber(user.getPhoneNumber());
+        userDto.setBirthDate(user.getBirthDate());
+        userDto.setActive(user.isActive());
+        userDto.setLastLoginAt(user.getLastLoginAt());
         userDto.setCreatedAt(user.getCreatedAt());
         userDto.setUpdatedAt(user.getUpdatedAt());
         return userDto;
@@ -78,11 +98,13 @@ public class UserService {
     private User convertToEntity(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
-        user.setPassword(userDto.getPassword());
+        user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-        user.setPhoneNumber(userDto.getPhoneNumber());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
+        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setBirthDate(userDto.getBirthDate());
+        user.setActive(userDto.isActive());
         return user;
     }
 }

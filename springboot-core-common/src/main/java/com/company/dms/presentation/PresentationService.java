@@ -1,10 +1,9 @@
 package com.company.dms.presentation;
 
-import com.company.dms.user.User;
 import com.company.dms.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,10 +29,13 @@ public class PresentationService {
     }
 
     public PresentationDto createPresentation(PresentationDto presentationDto) {
-        Presentation presentation = convertToEntity(presentationDto);
-        if (presentation.getId() == null) {
-            presentation.setId(UUID.randomUUID());
+        if (!userRepository.existsById(presentationDto.getUserId())) {
+            throw new RuntimeException("User not found");
         }
+
+        Presentation presentation = convertToEntity(presentationDto);
+        presentation.setCreatedAt(LocalDateTime.now());
+        presentation.setUpdatedAt(LocalDateTime.now());
         presentation = presentationRepository.save(presentation);
         return convertToDto(presentation);
     }
@@ -46,6 +48,7 @@ public class PresentationService {
         existingPresentation.setDescription(presentationDto.getDescription());
         existingPresentation.setMenuOrder(presentationDto.getMenuOrder());
         existingPresentation.setPropertiesJson(presentationDto.getPropertiesJson());
+        existingPresentation.setUpdatedAt(LocalDateTime.now());
 
         existingPresentation = presentationRepository.save(existingPresentation);
         return convertToDto(existingPresentation);
@@ -58,7 +61,7 @@ public class PresentationService {
     private PresentationDto convertToDto(Presentation presentation) {
         PresentationDto presentationDto = new PresentationDto();
         presentationDto.setId(presentation.getId());
-        presentationDto.setUserId(presentation.getUser().getId());
+        presentationDto.setUserId(presentation.getUserId());
         presentationDto.setName(presentation.getName());
         presentationDto.setDescription(presentation.getDescription());
         presentationDto.setMenuOrder(presentation.getMenuOrder());
@@ -70,16 +73,12 @@ public class PresentationService {
 
     private Presentation convertToEntity(PresentationDto presentationDto) {
         Presentation presentation = new Presentation();
-        presentation.setId(presentationDto.getId());  // ID 설정 유지
+        presentation.setId(presentationDto.getId());
+        presentation.setUserId(presentationDto.getUserId());
         presentation.setName(presentationDto.getName());
         presentation.setDescription(presentationDto.getDescription());
         presentation.setMenuOrder(presentationDto.getMenuOrder());
         presentation.setPropertiesJson(presentationDto.getPropertiesJson());
-
-        User user = userRepository.findById(presentationDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        presentation.setUser(user);
-
         return presentation;
     }
 }

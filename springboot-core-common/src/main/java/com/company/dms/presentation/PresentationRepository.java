@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface PresentationRepository extends JpaRepository<Presentation, UUID> {
     List<Presentation> findByUserId(UUID userId);
+    List<Presentation> findByUserIdOrderByMenuOrder(UUID userId);
 }

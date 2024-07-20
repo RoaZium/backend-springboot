@@ -1,11 +1,11 @@
 package com.company.dms.slide;
 
-import com.company.dms.user.User;
-import com.company.dms.presentation.Presentation;
 import com.company.dms.user.UserRepository;
 import com.company.dms.presentation.PresentationRepository;
+import com.company.dms.section.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,6 +21,9 @@ public class SlideService {
     @Autowired
     private PresentationRepository presentationRepository;
 
+    @Autowired
+    private SectionRepository sectionRepository;
+
     public List<SlideDto> getAllSlides() {
         return slideRepository.findAll().stream()
                 .map(this::convertToDto)
@@ -33,30 +36,25 @@ public class SlideService {
         return convertToDto(slide);
     }
 
-
     public SlideDto createSlide(SlideDto slideDto) {
-        if (slideDto.getUserId() == null) {
-            throw new IllegalArgumentException("User ID is required to create a slide");
+        if (!userRepository.existsById(slideDto.getUserId())) {
+            throw new RuntimeException("User not found");
         }
-
-        User user = userRepository.findById(slideDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + slideDto.getUserId()));
+        if (slideDto.getPresentationId() != null && !presentationRepository.existsById(slideDto.getPresentationId())) {
+            throw new RuntimeException("Presentation not found");
+        }
+        if (slideDto.getSectionId() != null && !sectionRepository.existsById(slideDto.getSectionId())) {
+            throw new RuntimeException("Section not found");
+        }
 
         Slide slide = convertToEntity(slideDto);
-        slide.setUser(user);
-
-        if (slide.getId() == null) {
-            slide.setId(UUID.randomUUID());
-        }
-
+        slide.setCreatedAt(LocalDateTime.now());
+        slide.setUpdatedAt(LocalDateTime.now());
         slide = slideRepository.save(slide);
         return convertToDto(slide);
     }
 
     public SlideDto updateSlide(UUID id, SlideDto slideDto) {
-        if (slideDto.getUserId() == null) {
-            throw new IllegalArgumentException("User ID is required");
-        }
         Slide existingSlide = slideRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Slide not found"));
 
@@ -64,15 +62,20 @@ public class SlideService {
         existingSlide.setMenuOrder(slideDto.getMenuOrder());
         existingSlide.setPresentationOrder(slideDto.getPresentationOrder());
         existingSlide.setPropertiesJson(slideDto.getPropertiesJson());
+        existingSlide.setUpdatedAt(LocalDateTime.now());
 
-        User user = userRepository.findById(slideDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        existingSlide.setUser(user);
+        if (slideDto.getPresentationId() != null && !slideDto.getPresentationId().equals(existingSlide.getPresentationId())) {
+            if (!presentationRepository.existsById(slideDto.getPresentationId())) {
+                throw new RuntimeException("Presentation not found");
+            }
+            existingSlide.setPresentationId(slideDto.getPresentationId());
+        }
 
-        if (slideDto.getPresentationId() != null) {
-            Presentation presentation = presentationRepository.findById(slideDto.getPresentationId())
-                    .orElseThrow(() -> new RuntimeException("Presentation not found"));
-            existingSlide.setPresentation(presentation);
+        if (slideDto.getSectionId() != null && !slideDto.getSectionId().equals(existingSlide.getSectionId())) {
+            if (!sectionRepository.existsById(slideDto.getSectionId())) {
+                throw new RuntimeException("Section not found");
+            }
+            existingSlide.setSectionId(slideDto.getSectionId());
         }
 
         existingSlide = slideRepository.save(existingSlide);
@@ -86,8 +89,9 @@ public class SlideService {
     private SlideDto convertToDto(Slide slide) {
         SlideDto slideDto = new SlideDto();
         slideDto.setId(slide.getId());
-        slideDto.setUserId(slide.getUser().getId());
-        slideDto.setPresentationId(slide.getPresentation() != null ? slide.getPresentation().getId() : null);
+        slideDto.setUserId(slide.getUserId());
+        slideDto.setPresentationId(slide.getPresentationId());
+        slideDto.setSectionId(slide.getSectionId());
         slideDto.setName(slide.getName());
         slideDto.setMenuOrder(slide.getMenuOrder());
         slideDto.setPresentationOrder(slide.getPresentationOrder());
@@ -100,19 +104,13 @@ public class SlideService {
     private Slide convertToEntity(SlideDto slideDto) {
         Slide slide = new Slide();
         slide.setId(slideDto.getId());
+        slide.setUserId(slideDto.getUserId());
+        slide.setPresentationId(slideDto.getPresentationId());
+        slide.setSectionId(slideDto.getSectionId());
         slide.setName(slideDto.getName());
         slide.setMenuOrder(slideDto.getMenuOrder());
         slide.setPresentationOrder(slideDto.getPresentationOrder());
         slide.setPropertiesJson(slideDto.getPropertiesJson());
-
-        User user = userRepository.findById(slideDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        slide.setUser(user);
-
-        Presentation presentation = presentationRepository.findById(slideDto.getPresentationId())
-                .orElseThrow(() -> new RuntimeException("Presentation not found"));
-        slide.setPresentation(presentation);
-
         return slide;
     }
 }

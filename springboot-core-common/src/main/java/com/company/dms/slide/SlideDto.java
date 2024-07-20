@@ -9,9 +9,10 @@ public class SlideDto {
     private UUID id;
     private UUID userId;
     private UUID presentationId;
+    private UUID sectionId;
     private String name;
     private int menuOrder;
-    private int presentationOrder;
+    private Integer presentationOrder;
     private String propertiesJson;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

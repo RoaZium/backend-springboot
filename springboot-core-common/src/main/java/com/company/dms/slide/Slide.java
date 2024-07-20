@@ -34,7 +34,7 @@ public class Slide {
     private int menuOrder;
 
     @Column(name = "presentation_order")
-    private int presentationOrder;
+    private Integer presentationOrder;
 
     @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
     private String propertiesJson;

@@ -1,11 +1,11 @@
 package com.company.dms.section;
 
-import com.company.dms.user.User;
 import com.company.dms.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,11 +39,13 @@ public class SectionService {
 
     @Transactional
     public SectionDto createSection(SectionDto sectionDto) {
-        User user = userRepository.findById(sectionDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!userRepository.existsById(sectionDto.getUserId())) {
+            throw new RuntimeException("User not found");
+        }
 
         Section section = convertToEntity(sectionDto);
-        section.setUser(user);
+        section.setCreatedAt(LocalDateTime.now());
+        section.setUpdatedAt(LocalDateTime.now());
         section = sectionRepository.save(section);
         return convertToDto(section);
     }
@@ -55,6 +57,7 @@ public class SectionService {
 
         existingSection.setName(sectionDto.getName());
         existingSection.setMenuOrder(sectionDto.getMenuOrder());
+        existingSection.setUpdatedAt(LocalDateTime.now());
 
         existingSection = sectionRepository.save(existingSection);
         return convertToDto(existingSection);
@@ -68,7 +71,7 @@ public class SectionService {
     private SectionDto convertToDto(Section section) {
         SectionDto dto = new SectionDto();
         dto.setId(section.getId());
-        dto.setUserId(section.getUser().getId());
+        dto.setUserId(section.getUserId());
         dto.setName(section.getName());
         dto.setMenuOrder(section.getMenuOrder());
         dto.setCreatedAt(section.getCreatedAt());
@@ -79,6 +82,7 @@ public class SectionService {
     private Section convertToEntity(SectionDto dto) {
         Section section = new Section();
         section.setId(dto.getId());
+        section.setUserId(dto.getUserId());
         section.setName(dto.getName());
         section.setMenuOrder(dto.getMenuOrder());
         return section;

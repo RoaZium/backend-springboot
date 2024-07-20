@@ -1,16 +1,10 @@
 package com.company.dms.component;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class ComponentDto {
     private UUID id;
     private UUID slideId;
