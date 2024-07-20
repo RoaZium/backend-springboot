@@ -3,10 +3,10 @@ package com.company.dms.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 @Service
 public class UserService {
@@ -29,8 +29,8 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
-        if (userDto.getEmail() == null || userDto.getUsername() == null || userDto.getPassword() == null) {
-            throw new IllegalArgumentException("Email, username and password are required");
+        if (userDto.getEmail() == null || userDto.getPassword() == null || userDto.getUsername() == null) {
+            throw new IllegalArgumentException("Email, password, and username are required");
         }
 
         if (userRepository.findByEmail(userDto.getEmail()) != null) {
@@ -42,6 +42,7 @@ public class UserService {
 
         User user = convertToEntity(userDto);
         user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
+        user.setActive(true);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
         user = userRepository.save(user);
@@ -54,16 +55,17 @@ public class UserService {
 
         existingUser.setEmail(userDto.getEmail());
         existingUser.setUsername(userDto.getUsername());
+        existingUser.setPhoneNumber(userDto.getPhoneNumber());
         existingUser.setFirstName(userDto.getFirstName());
         existingUser.setLastName(userDto.getLastName());
-        existingUser.setPhoneNumber(userDto.getPhoneNumber());
         existingUser.setBirthDate(userDto.getBirthDate());
-        existingUser.setUpdatedAt(LocalDateTime.now());
+        existingUser.setActive(userDto.isActive());
 
         if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
             existingUser.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
         }
 
+        existingUser.setUpdatedAt(LocalDateTime.now());
         existingUser = userRepository.save(existingUser);
         return convertToDto(existingUser);
     }
@@ -77,6 +79,10 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setLastLoginAt(LocalDateTime.now());
         userRepository.save(user);
+    }
+
+    public boolean verifyPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
     private UserDto convertToDto(User user) {
@@ -105,6 +111,7 @@ public class UserService {
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setBirthDate(userDto.getBirthDate());
         user.setActive(userDto.isActive());
+        user.setLastLoginAt(userDto.getLastLoginAt());
         return user;
     }
 }

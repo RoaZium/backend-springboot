@@ -59,4 +59,12 @@ public class User {
 
     @Column(name = "updated_by")
     private UUID updatedBy;
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 }
