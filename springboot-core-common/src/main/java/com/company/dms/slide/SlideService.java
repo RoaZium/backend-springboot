@@ -30,6 +30,24 @@ public class SlideService {
                 .collect(Collectors.toList());
     }
 
+    public List<SlideDto> getSlidesByUserId(UUID userId) {
+        return slideRepository.findByUserId(userId).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<SlideDto> getSlidesByPresentationId(UUID presentationId) {
+        return slideRepository.findByPresentationIdOrderByPresentationOrder(presentationId).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<SlideDto> getSlidesBySectionId(UUID sectionId) {
+        return slideRepository.findBySectionIdOrderByMenuOrder(sectionId).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     public SlideDto getSlideById(UUID id) {
         Slide slide = slideRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Slide not found"));

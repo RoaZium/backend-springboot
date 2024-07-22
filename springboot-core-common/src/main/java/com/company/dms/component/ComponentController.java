@@ -1,5 +1,6 @@
 package com.company.dms.component;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/components")
+@Tag(name = "Components", description = "Components Management APIs")
 public class ComponentController {
 
     private final ComponentService componentService;
