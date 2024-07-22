@@ -24,28 +24,28 @@ public class SlideService {
     @Autowired
     private SectionRepository sectionRepository;
 
-    public List<SlideDto> getAllSlides() {
-        return slideRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
+    public List<SlideDto> getSlides(UUID userId, UUID presentationId, UUID sectionId, String name) {
+        List<Slide> slides;
 
-    public List<SlideDto> getSlidesByUserId(UUID userId) {
-        return slideRepository.findByUserId(userId).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
+        if (userId != null && name != null) {
+            slides = slideRepository.findByUserIdAndNameContainingIgnoreCase(userId, name);
+        } else if (presentationId != null && name != null) {
+            slides = slideRepository.findByPresentationIdAndNameContainingIgnoreCaseOrderByPresentationOrder(presentationId, name);
+        } else if (sectionId != null && name != null) {
+            slides = slideRepository.findBySectionIdAndNameContainingIgnoreCaseOrderByMenuOrder(sectionId, name);
+        } else if (userId != null) {
+            slides = slideRepository.findByUserId(userId);
+        } else if (presentationId != null) {
+            slides = slideRepository.findByPresentationIdOrderByPresentationOrder(presentationId);
+        } else if (sectionId != null) {
+            slides = slideRepository.findBySectionIdOrderByMenuOrder(sectionId);
+        } else if (name != null) {
+            slides = slideRepository.findByNameContainingIgnoreCase(name);
+        } else {
+            slides = slideRepository.findAll();
+        }
 
-    public List<SlideDto> getSlidesByPresentationId(UUID presentationId) {
-        return slideRepository.findByPresentationIdOrderByPresentationOrder(presentationId).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<SlideDto> getSlidesBySectionId(UUID sectionId) {
-        return slideRepository.findBySectionIdOrderByMenuOrder(sectionId).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        return slides.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public SlideDto getSlideById(UUID id) {

@@ -17,19 +17,12 @@ public class SlideController {
     private SlideService slideService;
 
     @GetMapping
-    public ResponseEntity<List<SlideDto>> getAllSlides(
+    public ResponseEntity<List<SlideDto>> getSlides(
             @RequestParam(required = false) UUID userId,
             @RequestParam(required = false) UUID presentationId,
-            @RequestParam(required = false) UUID sectionId) {
-        if (userId != null) {
-            return ResponseEntity.ok(slideService.getSlidesByUserId(userId));
-        } else if (presentationId != null) {
-            return ResponseEntity.ok(slideService.getSlidesByPresentationId(presentationId));
-        } else if (sectionId != null) {
-            return ResponseEntity.ok(slideService.getSlidesBySectionId(sectionId));
-        } else {
-            return ResponseEntity.ok(slideService.getAllSlides());
-        }
+            @RequestParam(required = false) UUID sectionId,
+            @RequestParam(required = false) String name) {
+        return ResponseEntity.ok(slideService.getSlides(userId, presentationId, sectionId, name));
     }
 
     @GetMapping("/{id}")

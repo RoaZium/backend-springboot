@@ -6,8 +6,10 @@ import java.util.UUID;
 
 public interface SlideRepository extends JpaRepository<Slide, UUID> {
     List<Slide> findByUserId(UUID userId);
-    List<Slide> findByPresentationId(UUID presentationId);
-    List<Slide> findBySectionId(UUID sectionId);
     List<Slide> findByPresentationIdOrderByPresentationOrder(UUID presentationId);
     List<Slide> findBySectionIdOrderByMenuOrder(UUID sectionId);
+    List<Slide> findByUserIdAndNameContainingIgnoreCase(UUID userId, String name);
+    List<Slide> findByPresentationIdAndNameContainingIgnoreCaseOrderByPresentationOrder(UUID presentationId, String name);
+    List<Slide> findBySectionIdAndNameContainingIgnoreCaseOrderByMenuOrder(UUID sectionId, String name);
+    List<Slide> findByNameContainingIgnoreCase(String name);
 }
