@@ -24,8 +24,7 @@ public class ComponentController {
 
     @GetMapping
     public ResponseEntity<List<ComponentDto>> getComponents(
-            @RequestParam(required = false) UUID slideId,
-            @Parameter(description = "Component categories: 'shape', 'chart', 'table', 'image'")
+            @Parameter(description = "Component categories: 'shape', 'chart', 'table', 'image'") @RequestParam(required = false) UUID slideId,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String name) {
         List<ComponentDto> components = componentService.getComponents(slideId, category, name);
