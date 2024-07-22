@@ -1,6 +1,5 @@
 package com.company.dms.presentation;
 
-import com.company.dms.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -10,16 +9,25 @@ import java.util.stream.Collectors;
 
 @Service
 public class PresentationService {
-    @Autowired
-    private PresentationRepository presentationRepository;
+    private final PresentationRepository presentationRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public PresentationService(PresentationRepository presentationRepository) {
+        this.presentationRepository = presentationRepository;
+    }
 
-    public List<PresentationDto> getAllPresentations() {
-        return presentationRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    public List<PresentationDto> getPresentations(UUID userId, String name) {
+        List<Presentation> presentations;
+
+        if (userId != null) {
+            presentations = presentationRepository.findByUserIdOrderByMenuOrder(userId);
+        } else if (name != null) {
+            presentations = presentationRepository.findByNameContainingIgnoreCase(name);
+        } else {
+            presentations = presentationRepository.findAll();
+        }
+
+        return presentations.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public PresentationDto getPresentationById(UUID id) {
@@ -29,10 +37,6 @@ public class PresentationService {
     }
 
     public PresentationDto createPresentation(PresentationDto presentationDto) {
-        if (!userRepository.existsById(presentationDto.getUserId())) {
-            throw new RuntimeException("User not found");
-        }
-
         Presentation presentation = convertToEntity(presentationDto);
         presentation.setCreatedAt(LocalDateTime.now());
         presentation.setUpdatedAt(LocalDateTime.now());
@@ -44,18 +48,19 @@ public class PresentationService {
         Presentation existingPresentation = presentationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Presentation not found"));
 
-        existingPresentation.setName(presentationDto.getName());
-        existingPresentation.setDescription(presentationDto.getDescription());
-        existingPresentation.setMenuOrder(presentationDto.getMenuOrder());
-        existingPresentation.setPropertiesJson(presentationDto.getPropertiesJson());
+        updatePresentationFromDto(existingPresentation, presentationDto);
         existingPresentation.setUpdatedAt(LocalDateTime.now());
 
         existingPresentation = presentationRepository.save(existingPresentation);
         return convertToDto(existingPresentation);
     }
 
-    public void deletePresentation(UUID id) {
-        presentationRepository.deleteById(id);
+    public boolean deletePresentation(UUID id) {
+        if (presentationRepository.existsById(id)) {
+            presentationRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     private PresentationDto convertToDto(Presentation presentation) {
@@ -80,5 +85,12 @@ public class PresentationService {
         presentation.setMenuOrder(presentationDto.getMenuOrder());
         presentation.setPropertiesJson(presentationDto.getPropertiesJson());
         return presentation;
+    }
+
+    private void updatePresentationFromDto(Presentation presentation, PresentationDto presentationDto) {
+        presentation.setName(presentationDto.getName());
+        presentation.setDescription(presentationDto.getDescription());
+        presentation.setMenuOrder(presentationDto.getMenuOrder());
+        presentation.setPropertiesJson(presentationDto.getPropertiesJson());
     }
 }

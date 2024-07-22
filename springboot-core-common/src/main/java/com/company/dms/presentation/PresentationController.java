@@ -13,12 +13,19 @@ import java.util.UUID;
 @Tag(name = "Presentations", description = "Presentations Management APIs")
 public class PresentationController {
 
+    private final PresentationService presentationService;
+
     @Autowired
-    private PresentationService presentationService;
+    public PresentationController(PresentationService presentationService) {
+        this.presentationService = presentationService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<PresentationDto>> getAllPresentations() {
-        return ResponseEntity.ok(presentationService.getAllPresentations());
+    public ResponseEntity<List<PresentationDto>> getPresentations(
+            @RequestParam(required = false) UUID userId,
+            @RequestParam(required = false) String name) {
+        List<PresentationDto> presentations = presentationService.getPresentations(userId, name);
+        return ResponseEntity.ok(presentations);
     }
 
     @GetMapping("/{id}")
@@ -38,7 +45,7 @@ public class PresentationController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePresentation(@PathVariable UUID id) {
-        presentationService.deletePresentation(id);
-        return ResponseEntity.noContent().build();
+        boolean deleted = presentationService.deletePresentation(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
