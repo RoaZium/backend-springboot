@@ -1,17 +1,18 @@
 package com.company.dms.component;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Parameter;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/components")
-@Tag(name = "Components", description = "Component Management APIs")
 public class ComponentController {
+
     private final ComponentService componentService;
 
     @Autowired
@@ -20,33 +21,36 @@ public class ComponentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ComponentDto>> getAllComponents() {
-        List<ComponentDto> components = componentService.getAllComponents();
+    public ResponseEntity<List<ComponentDto>> getComponents(
+            @RequestParam(required = false) UUID slideId,
+            @Parameter(description = "Component categories: 'shape', 'chart', 'table', 'image'")
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String name) {
+        List<ComponentDto> components = componentService.getComponents(slideId, category, name);
         return ResponseEntity.ok(components);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ComponentDto> getComponentById(@PathVariable UUID id) {
-        return componentService.getComponentById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ComponentDto> getComponent(@PathVariable UUID id) {
+        ComponentDto component = componentService.getComponent(id);
+        return component != null ? ResponseEntity.ok(component) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
     public ResponseEntity<ComponentDto> createComponent(@RequestBody ComponentDto componentDto) {
         ComponentDto createdComponent = componentService.createComponent(componentDto);
-        return ResponseEntity.ok(createdComponent);
+        return new ResponseEntity<>(createdComponent, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ComponentDto> updateComponent(@PathVariable UUID id, @RequestBody ComponentDto componentDto) {
         ComponentDto updatedComponent = componentService.updateComponent(id, componentDto);
-        return ResponseEntity.ok(updatedComponent);
+        return updatedComponent != null ? ResponseEntity.ok(updatedComponent) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteComponent(@PathVariable UUID id) {
-        componentService.deleteComponent(id);
-        return ResponseEntity.noContent().build();
+        boolean deleted = componentService.deleteComponent(id);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
