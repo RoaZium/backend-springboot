@@ -19,16 +19,20 @@ public class SectionService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<SectionDto> getAllSections() {
-        return sectionRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
+    public List<SectionDto> getSections(UUID userId, String name) {
+        List<Section> sections;
 
-    public List<SectionDto> getSectionsByUserId(UUID userId) {
-        return sectionRepository.findByUserIdOrderByMenuOrder(userId).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        if (userId != null && name != null) {
+            sections = sectionRepository.findByUserIdAndNameContainingIgnoreCaseOrderByMenuOrder(userId, name);
+        } else if (userId != null) {
+            sections = sectionRepository.findByUserIdOrderByMenuOrder(userId);
+        } else if (name != null) {
+            sections = sectionRepository.findByNameContainingIgnoreCaseOrderByMenuOrder(name);
+        } else {
+            sections = sectionRepository.findAll();
+        }
+
+        return sections.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public SectionDto getSectionById(UUID id) {

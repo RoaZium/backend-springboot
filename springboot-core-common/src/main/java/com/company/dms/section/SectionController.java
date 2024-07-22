@@ -17,13 +17,10 @@ public class SectionController {
     private SectionService sectionService;
 
     @GetMapping
-    public ResponseEntity<List<SectionDto>> getAllSections() {
-        return ResponseEntity.ok(sectionService.getAllSections());
-    }
-
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<SectionDto>> getSectionsByUserId(@PathVariable UUID userId) {
-        return ResponseEntity.ok(sectionService.getSectionsByUserId(userId));
+    public ResponseEntity<List<SectionDto>> getSections(
+            @RequestParam(required = false) UUID userId,
+            @RequestParam(required = false) String name) {
+        return ResponseEntity.ok(sectionService.getSections(userId, name));
     }
 
     @GetMapping("/{id}")

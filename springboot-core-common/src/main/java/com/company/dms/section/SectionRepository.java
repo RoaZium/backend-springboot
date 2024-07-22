@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface SectionRepository extends JpaRepository<Section, UUID> {
-    List<Section> findByUserId(UUID userId);
     List<Section> findByUserIdOrderByMenuOrder(UUID userId);
+    List<Section> findByUserIdAndNameContainingIgnoreCaseOrderByMenuOrder(UUID userId, String name);
+    List<Section> findByNameContainingIgnoreCaseOrderByMenuOrder(String name);
 }
