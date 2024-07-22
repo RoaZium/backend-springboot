@@ -2,18 +2,16 @@ package com.company.dms.component;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/components")
 @Tag(name = "Components", description = "Component Management APIs")
 public class ComponentController {
-
     private final ComponentService componentService;
 
     @Autowired
@@ -22,8 +20,8 @@ public class ComponentController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ComponentDto>> getAllComponents(Pageable pageable) {
-        Page<ComponentDto> components = componentService.getAllComponents(pageable);
+    public ResponseEntity<List<ComponentDto>> getAllComponents() {
+        List<ComponentDto> components = componentService.getAllComponents();
         return ResponseEntity.ok(components);
     }
 
