@@ -6,97 +6,103 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.time.LocalDateTime;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public List<UserDto> getUsers(String username, String email, String firstName, String lastName, String phoneNumber, Boolean isActive) {
+        List<User> users;
+
+        if (username != null) {
+            users = userRepository.findByUsernameContainingIgnoreCase(username);
+        } else if (email != null) {
+            users = userRepository.findByEmailContainingIgnoreCase(email);
+        } else if (firstName != null) {
+            users = userRepository.findByFirstNameContainingIgnoreCase(firstName);
+        } else if (lastName != null) {
+            users = userRepository.findByLastNameContainingIgnoreCase(lastName);
+        } else if (phoneNumber != null) {
+            users = userRepository.findByPhoneNumberContaining(phoneNumber);
+        } else if (isActive != null) {
+            users = userRepository.findByIsActive(isActive);
+        } else {
+            users = userRepository.findAll();
+        }
+
+        return users.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     public UserDto getUserById(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return convertToDto(user);
+        return userRepository.findById(id)
+                .map(this::convertToDto)
+                .orElse(null);
     }
 
     public UserDto createUser(UserDto userDto) {
-        if (userDto.getEmail() == null || userDto.getUsername() == null) {
-            throw new IllegalArgumentException("Email and username are required");
-        }
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already exists");
-        }
-        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username already exists");
-        }
         User user = convertToEntity(userDto);
-        user.setPasswordHash(null);  // Set password hash to null
-        user.setActive(true);
-        user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
-        user = userRepository.save(user);
-        return convertToDto(user);
+        User savedUser = userRepository.save(user);
+        return convertToDto(savedUser);
     }
 
     public UserDto updateUser(UUID id, UserDto userDto) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        existingUser.setEmail(userDto.getEmail());
-        existingUser.setUsername(userDto.getUsername());
-        existingUser.setPhoneNumber(userDto.getPhoneNumber());
-        existingUser.setFirstName(userDto.getFirstName());
-        existingUser.setLastName(userDto.getLastName());
-        existingUser.setBirthDate(userDto.getBirthDate());
-        existingUser.setActive(userDto.isActive());
-        existingUser.setUpdatedAt(LocalDateTime.now());
-        existingUser = userRepository.save(existingUser);
-        return convertToDto(existingUser);
+        return userRepository.findById(id)
+                .map(user -> {
+                    updateUserFromDto(user, userDto);
+                    User updatedUser = userRepository.save(user);
+                    return convertToDto(updatedUser);
+                })
+                .orElse(null);
     }
 
-    public void deleteUser(UUID id) {
-        userRepository.deleteById(id);
-    }
-
-    public void updateLastLogin(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setLastLoginAt(LocalDateTime.now());
-        userRepository.save(user);
+    public boolean deleteUser(UUID id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     private UserDto convertToDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setUsername(user.getUsername());
-        userDto.setEmail(user.getEmail());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setPhoneNumber(user.getPhoneNumber());
-        userDto.setBirthDate(user.getBirthDate());
-        userDto.setActive(user.isActive());
-        userDto.setLastLoginAt(user.getLastLoginAt());
-        userDto.setCreatedAt(user.getCreatedAt());
-        userDto.setUpdatedAt(user.getUpdatedAt());
-        return userDto;
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setBirthDate(user.getBirthDate());
+        dto.setActive(user.isActive());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setUpdatedAt(user.getUpdatedAt());
+        return dto;
     }
 
-    private User convertToEntity(UserDto userDto) {
+    private User convertToEntity(UserDto dto) {
         User user = new User();
-        user.setId(userDto.getId());
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setBirthDate(userDto.getBirthDate());
-        user.setActive(userDto.isActive());
-        user.setLastLoginAt(userDto.getLastLoginAt());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setBirthDate(dto.getBirthDate());
+        user.setActive(dto.isActive());
         return user;
+    }
+
+    private void updateUserFromDto(User user, UserDto dto) {
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setBirthDate(dto.getBirthDate());
+        user.setActive(dto.isActive());
     }
 }
