@@ -9,7 +9,7 @@ COPY build/libs/*.jar app.jar
 
 # Set environment variables
 ENV SPRING_PROFILES_ACTIVE=mssql
-ENV DB_HOST=192.168.10.170
+ENV DB_HOST=192.168.50.155
 ENV DB_PORT=1433
 ENV DB_NAME=dms_db
 ENV DB_USERNAME=sa
