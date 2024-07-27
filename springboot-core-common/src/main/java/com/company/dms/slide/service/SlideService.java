@@ -1,7 +1,7 @@
 package com.company.dms.slide.service;
 
 import com.company.dms.slide.dto.SlideDto;
-import com.company.dms.slide.entity.SlideEntity;
+import com.company.dms.slide.entity.Slide;
 import com.company.dms.slide.repository.SlideRepository;
 import com.company.dms.user.repository.UserRepository;
 import com.company.dms.presentation.repository.PresentationRepository;
@@ -28,7 +28,7 @@ public class SlideService {
     private SectionRepository sectionRepository;
 
     public List<SlideDto> getSlides(UUID userId, UUID presentationId, UUID sectionId, String name) {
-        List<SlideEntity> slideEntities;
+        List<Slide> slideEntities;
 
         if (userId != null && name != null) {
             slideEntities = slideRepository.findByUserIdAndNameContainingIgnoreCase(userId, name);
@@ -52,9 +52,9 @@ public class SlideService {
     }
 
     public SlideDto getSlideById(UUID id) {
-        SlideEntity slideEntity = slideRepository.findById(id)
+        Slide slide = slideRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Slide not found"));
-        return convertToDto(slideEntity);
+        return convertToDto(slide);
     }
 
     public SlideDto createSlide(SlideDto slideDto) {
@@ -68,70 +68,70 @@ public class SlideService {
             throw new RuntimeException("Section not found");
         }
 
-        SlideEntity slideEntity = convertToEntity(slideDto);
-        slideEntity.setCreatedAt(LocalDateTime.now());
-        slideEntity.setUpdatedAt(LocalDateTime.now());
-        slideEntity = slideRepository.save(slideEntity);
-        return convertToDto(slideEntity);
+        Slide slide = convertToEntity(slideDto);
+        slide.setCreatedAt(LocalDateTime.now());
+        slide.setUpdatedAt(LocalDateTime.now());
+        slide = slideRepository.save(slide);
+        return convertToDto(slide);
     }
 
     public SlideDto updateSlide(UUID id, SlideDto slideDto) {
-        SlideEntity existingSlideEntity = slideRepository.findById(id)
+        Slide existingSlide = slideRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Slide not found"));
 
-        existingSlideEntity.setName(slideDto.getName());
-        existingSlideEntity.setMenuOrder(slideDto.getMenuOrder());
-        existingSlideEntity.setPresentationOrder(slideDto.getPresentationOrder());
-        existingSlideEntity.setPropertiesJson(slideDto.getPropertiesJson());
-        existingSlideEntity.setUpdatedAt(LocalDateTime.now());
+        existingSlide.setName(slideDto.getName());
+        existingSlide.setMenuOrder(slideDto.getMenuOrder());
+        existingSlide.setPresentationOrder(slideDto.getPresentationOrder());
+        existingSlide.setPropertiesJson(slideDto.getPropertiesJson());
+        existingSlide.setUpdatedAt(LocalDateTime.now());
 
-        if (slideDto.getPresentationId() != null && !slideDto.getPresentationId().equals(existingSlideEntity.getPresentationId())) {
+        if (slideDto.getPresentationId() != null && !slideDto.getPresentationId().equals(existingSlide.getPresentationId())) {
             if (!presentationRepository.existsById(slideDto.getPresentationId())) {
                 throw new RuntimeException("Presentation not found");
             }
-            existingSlideEntity.setPresentationId(slideDto.getPresentationId());
+            existingSlide.setPresentationId(slideDto.getPresentationId());
         }
 
-        if (slideDto.getSectionId() != null && !slideDto.getSectionId().equals(existingSlideEntity.getSectionId())) {
+        if (slideDto.getSectionId() != null && !slideDto.getSectionId().equals(existingSlide.getSectionId())) {
             if (!sectionRepository.existsById(slideDto.getSectionId())) {
                 throw new RuntimeException("Section not found");
             }
-            existingSlideEntity.setSectionId(slideDto.getSectionId());
+            existingSlide.setSectionId(slideDto.getSectionId());
         }
 
-        existingSlideEntity = slideRepository.save(existingSlideEntity);
-        return convertToDto(existingSlideEntity);
+        existingSlide = slideRepository.save(existingSlide);
+        return convertToDto(existingSlide);
     }
 
     public void deleteSlide(UUID id) {
         slideRepository.deleteById(id);
     }
 
-    private SlideDto convertToDto(SlideEntity slideEntity) {
+    private SlideDto convertToDto(Slide slide) {
         SlideDto slideDto = new SlideDto();
-        slideDto.setId(slideEntity.getId());
-        slideDto.setUserId(slideEntity.getUserId());
-        slideDto.setPresentationId(slideEntity.getPresentationId());
-        slideDto.setSectionId(slideEntity.getSectionId());
-        slideDto.setName(slideEntity.getName());
-        slideDto.setMenuOrder(slideEntity.getMenuOrder());
-        slideDto.setPresentationOrder(slideEntity.getPresentationOrder());
-        slideDto.setPropertiesJson(slideEntity.getPropertiesJson());
-        slideDto.setCreatedAt(slideEntity.getCreatedAt());
-        slideDto.setUpdatedAt(slideEntity.getUpdatedAt());
+        slideDto.setId(slide.getId());
+        slideDto.setUserId(slide.getUserId());
+        slideDto.setPresentationId(slide.getPresentationId());
+        slideDto.setSectionId(slide.getSectionId());
+        slideDto.setName(slide.getName());
+        slideDto.setMenuOrder(slide.getMenuOrder());
+        slideDto.setPresentationOrder(slide.getPresentationOrder());
+        slideDto.setPropertiesJson(slide.getPropertiesJson());
+        slideDto.setCreatedAt(slide.getCreatedAt());
+        slideDto.setUpdatedAt(slide.getUpdatedAt());
         return slideDto;
     }
 
-    private SlideEntity convertToEntity(SlideDto slideDto) {
-        SlideEntity slideEntity = new SlideEntity();
-        slideEntity.setId(slideDto.getId());
-        slideEntity.setUserId(slideDto.getUserId());
-        slideEntity.setPresentationId(slideDto.getPresentationId());
-        slideEntity.setSectionId(slideDto.getSectionId());
-        slideEntity.setName(slideDto.getName());
-        slideEntity.setMenuOrder(slideDto.getMenuOrder());
-        slideEntity.setPresentationOrder(slideDto.getPresentationOrder());
-        slideEntity.setPropertiesJson(slideDto.getPropertiesJson());
-        return slideEntity;
+    private Slide convertToEntity(SlideDto slideDto) {
+        Slide slide = new Slide();
+        slide.setId(slideDto.getId());
+        slide.setUserId(slideDto.getUserId());
+        slide.setPresentationId(slideDto.getPresentationId());
+        slide.setSectionId(slideDto.getSectionId());
+        slide.setName(slideDto.getName());
+        slide.setMenuOrder(slideDto.getMenuOrder());
+        slide.setPresentationOrder(slideDto.getPresentationOrder());
+        slide.setPropertiesJson(slideDto.getPropertiesJson());
+        return slide;
     }
 }

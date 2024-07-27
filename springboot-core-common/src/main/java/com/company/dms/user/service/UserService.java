@@ -1,7 +1,7 @@
 package com.company.dms.user.service;
 
 import com.company.dms.user.dto.UserDto;
-import com.company.dms.user.entity.UserEntity;
+import com.company.dms.user.entity.User;
 import com.company.dms.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public List<UserDto> getUsers(String username, String email, String firstName, String lastName, String phoneNumber, Boolean isActive) {
-        List<UserEntity> userEntities;
+        List<User> userEntities;
 
         if (username != null) {
             userEntities = userRepository.findByUsernameContainingIgnoreCase(username);
@@ -49,17 +49,17 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto userDto) {
-        UserEntity userEntity = convertToEntity(userDto);
-        UserEntity savedUserEntity = userRepository.save(userEntity);
-        return convertToDto(savedUserEntity);
+        User user = convertToEntity(userDto);
+        User savedUser = userRepository.save(user);
+        return convertToDto(savedUser);
     }
 
     public UserDto updateUser(UUID id, UserDto userDto) {
         return userRepository.findById(id)
-                .map(userEntity -> {
-                    updateUserFromDto(userEntity, userDto);
-                    UserEntity updatedUserEntity = userRepository.save(userEntity);
-                    return convertToDto(updatedUserEntity);
+                .map(user -> {
+                    updateUserFromDto(user, userDto);
+                    User updatedUser = userRepository.save(user);
+                    return convertToDto(updatedUser);
                 })
                 .orElse(null);
     }
@@ -72,40 +72,40 @@ public class UserService {
         return false;
     }
 
-    private UserDto convertToDto(UserEntity userEntity) {
+    private UserDto convertToDto(User user) {
         UserDto dto = new UserDto();
-        dto.setId(userEntity.getId());
-        dto.setUsername(userEntity.getUsername());
-        dto.setEmail(userEntity.getEmail());
-        dto.setFirstName(userEntity.getFirstName());
-        dto.setLastName(userEntity.getLastName());
-        dto.setPhoneNumber(userEntity.getPhoneNumber());
-        dto.setBirthDate(userEntity.getBirthDate());
-        dto.setActive(userEntity.isActive());
-        dto.setCreatedAt(userEntity.getCreatedAt());
-        dto.setUpdatedAt(userEntity.getUpdatedAt());
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setPhoneNumber(user.getPhoneNumber());
+        dto.setBirthDate(user.getBirthDate());
+        dto.setActive(user.isActive());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setUpdatedAt(user.getUpdatedAt());
         return dto;
     }
 
-    private UserEntity convertToEntity(UserDto dto) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(dto.getUsername());
-        userEntity.setEmail(dto.getEmail());
-        userEntity.setFirstName(dto.getFirstName());
-        userEntity.setLastName(dto.getLastName());
-        userEntity.setPhoneNumber(dto.getPhoneNumber());
-        userEntity.setBirthDate(dto.getBirthDate());
-        userEntity.setActive(dto.isActive());
-        return userEntity;
+    private User convertToEntity(UserDto dto) {
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setBirthDate(dto.getBirthDate());
+        user.setActive(dto.isActive());
+        return user;
     }
 
-    private void updateUserFromDto(UserEntity userEntity, UserDto dto) {
-        userEntity.setUsername(dto.getUsername());
-        userEntity.setEmail(dto.getEmail());
-        userEntity.setFirstName(dto.getFirstName());
-        userEntity.setLastName(dto.getLastName());
-        userEntity.setPhoneNumber(dto.getPhoneNumber());
-        userEntity.setBirthDate(dto.getBirthDate());
-        userEntity.setActive(dto.isActive());
+    private void updateUserFromDto(User user, UserDto dto) {
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setBirthDate(dto.getBirthDate());
+        user.setActive(dto.isActive());
     }
 }

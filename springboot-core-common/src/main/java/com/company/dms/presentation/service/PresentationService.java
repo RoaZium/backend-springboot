@@ -1,7 +1,7 @@
 package com.company.dms.presentation.service;
 
 import com.company.dms.presentation.dto.PresentationDto;
-import com.company.dms.presentation.entity.PresentationEntity;
+import com.company.dms.presentation.entity.Presentation;
 import com.company.dms.presentation.repository.PresentationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class PresentationService {
     }
 
     public List<PresentationDto> getPresentations(UUID userId, String name) {
-        List<PresentationEntity> presentationEntities;
+        List<Presentation> presentationEntities;
 
         if (userId != null) {
             presentationEntities = presentationRepository.findByUserIdOrderByMenuOrder(userId);
@@ -34,28 +34,28 @@ public class PresentationService {
     }
 
     public PresentationDto getPresentationById(UUID id) {
-        PresentationEntity presentationEntity = presentationRepository.findById(id)
+        Presentation presentation = presentationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Presentation not found"));
-        return convertToDto(presentationEntity);
+        return convertToDto(presentation);
     }
 
     public PresentationDto createPresentation(PresentationDto presentationDto) {
-        PresentationEntity presentationEntity = convertToEntity(presentationDto);
-        presentationEntity.setCreatedAt(LocalDateTime.now());
-        presentationEntity.setUpdatedAt(LocalDateTime.now());
-        presentationEntity = presentationRepository.save(presentationEntity);
-        return convertToDto(presentationEntity);
+        Presentation presentation = convertToEntity(presentationDto);
+        presentation.setCreatedAt(LocalDateTime.now());
+        presentation.setUpdatedAt(LocalDateTime.now());
+        presentation = presentationRepository.save(presentation);
+        return convertToDto(presentation);
     }
 
     public PresentationDto updatePresentation(UUID id, PresentationDto presentationDto) {
-        PresentationEntity existingPresentationEntity = presentationRepository.findById(id)
+        Presentation existingPresentation = presentationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Presentation not found"));
 
-        updatePresentationFromDto(existingPresentationEntity, presentationDto);
-        existingPresentationEntity.setUpdatedAt(LocalDateTime.now());
+        updatePresentationFromDto(existingPresentation, presentationDto);
+        existingPresentation.setUpdatedAt(LocalDateTime.now());
 
-        existingPresentationEntity = presentationRepository.save(existingPresentationEntity);
-        return convertToDto(existingPresentationEntity);
+        existingPresentation = presentationRepository.save(existingPresentation);
+        return convertToDto(existingPresentation);
     }
 
     public boolean deletePresentation(UUID id) {
@@ -66,34 +66,34 @@ public class PresentationService {
         return false;
     }
 
-    private PresentationDto convertToDto(PresentationEntity presentationEntity) {
+    private PresentationDto convertToDto(Presentation presentation) {
         PresentationDto presentationDto = new PresentationDto();
-        presentationDto.setId(presentationEntity.getId());
-        presentationDto.setUserId(presentationEntity.getUserId());
-        presentationDto.setName(presentationEntity.getName());
-        presentationDto.setDescription(presentationEntity.getDescription());
-        presentationDto.setMenuOrder(presentationEntity.getMenuOrder());
-        presentationDto.setPropertiesJson(presentationEntity.getPropertiesJson());
-        presentationDto.setCreatedAt(presentationEntity.getCreatedAt());
-        presentationDto.setUpdatedAt(presentationEntity.getUpdatedAt());
+        presentationDto.setId(presentation.getId());
+        presentationDto.setUserId(presentation.getUserId());
+        presentationDto.setName(presentation.getName());
+        presentationDto.setDescription(presentation.getDescription());
+        presentationDto.setMenuOrder(presentation.getMenuOrder());
+        presentationDto.setPropertiesJson(presentation.getPropertiesJson());
+        presentationDto.setCreatedAt(presentation.getCreatedAt());
+        presentationDto.setUpdatedAt(presentation.getUpdatedAt());
         return presentationDto;
     }
 
-    private PresentationEntity convertToEntity(PresentationDto presentationDto) {
-        PresentationEntity presentationEntity = new PresentationEntity();
-        presentationEntity.setId(presentationDto.getId());
-        presentationEntity.setUserId(presentationDto.getUserId());
-        presentationEntity.setName(presentationDto.getName());
-        presentationEntity.setDescription(presentationDto.getDescription());
-        presentationEntity.setMenuOrder(presentationDto.getMenuOrder());
-        presentationEntity.setPropertiesJson(presentationDto.getPropertiesJson());
-        return presentationEntity;
+    private Presentation convertToEntity(PresentationDto presentationDto) {
+        Presentation presentation = new Presentation();
+        presentation.setId(presentationDto.getId());
+        presentation.setUserId(presentationDto.getUserId());
+        presentation.setName(presentationDto.getName());
+        presentation.setDescription(presentationDto.getDescription());
+        presentation.setMenuOrder(presentationDto.getMenuOrder());
+        presentation.setPropertiesJson(presentationDto.getPropertiesJson());
+        return presentation;
     }
 
-    private void updatePresentationFromDto(PresentationEntity presentationEntity, PresentationDto presentationDto) {
-        presentationEntity.setName(presentationDto.getName());
-        presentationEntity.setDescription(presentationDto.getDescription());
-        presentationEntity.setMenuOrder(presentationDto.getMenuOrder());
-        presentationEntity.setPropertiesJson(presentationDto.getPropertiesJson());
+    private void updatePresentationFromDto(Presentation presentation, PresentationDto presentationDto) {
+        presentation.setName(presentationDto.getName());
+        presentation.setDescription(presentationDto.getDescription());
+        presentation.setMenuOrder(presentationDto.getMenuOrder());
+        presentation.setPropertiesJson(presentationDto.getPropertiesJson());
     }
 }

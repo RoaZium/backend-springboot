@@ -1,4 +1,4 @@
-package com.company.dms.section.entity;
+package com.company.dms.component.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,23 +9,26 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "section")
+@Table(name = "component")
 @Data
-public class SectionEntity {
+public class Component {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
+    @Column(name = "slide_id", nullable = false)
+    private UUID slideId;
+
+    @Column(name = "category", nullable = false, length = 20)
+    private String category;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "menu_order", nullable = false)
-    private int menuOrder;
+    @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
+    private String propertiesJson;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

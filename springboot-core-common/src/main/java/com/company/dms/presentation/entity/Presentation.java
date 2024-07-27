@@ -1,4 +1,4 @@
-package com.company.dms.component.entity;
+package com.company.dms.presentation.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,23 +9,26 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "component")
+@Table(name = "presentation")
 @Data
-public class ComponentEntity {
+public class Presentation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "slide_id", nullable = false)
-    private UUID slideId;
-
-    @Column(name = "category", nullable = false, length = 20)
-    private String category;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "menu_order", nullable = false)
+    private int menuOrder;
+
+    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
+    private String description;
 
     @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
     private String propertiesJson;

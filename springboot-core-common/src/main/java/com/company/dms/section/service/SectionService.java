@@ -1,7 +1,7 @@
 package com.company.dms.section.service;
 
 import com.company.dms.section.dto.SectionDto;
-import com.company.dms.section.entity.SectionEntity;
+import com.company.dms.section.entity.Section;
 import com.company.dms.section.repository.SectionRepository;
 import com.company.dms.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class SectionService {
     private UserRepository userRepository;
 
     public List<SectionDto> getSections(UUID userId, String name) {
-        List<SectionEntity> sectionEntities;
+        List<Section> sectionEntities;
 
         if (userId != null && name != null) {
             sectionEntities = sectionRepository.findByUserIdAndNameContainingIgnoreCaseOrderByMenuOrder(userId, name);
@@ -39,9 +39,9 @@ public class SectionService {
     }
 
     public SectionDto getSectionById(UUID id) {
-        SectionEntity sectionEntity = sectionRepository.findById(id)
+        Section section = sectionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Section not found"));
-        return convertToDto(sectionEntity);
+        return convertToDto(section);
     }
 
     @Transactional
@@ -50,24 +50,24 @@ public class SectionService {
             throw new RuntimeException("User not found");
         }
 
-        SectionEntity sectionEntity = convertToEntity(sectionDto);
-        sectionEntity.setCreatedAt(LocalDateTime.now());
-        sectionEntity.setUpdatedAt(LocalDateTime.now());
-        sectionEntity = sectionRepository.save(sectionEntity);
-        return convertToDto(sectionEntity);
+        Section section = convertToEntity(sectionDto);
+        section.setCreatedAt(LocalDateTime.now());
+        section.setUpdatedAt(LocalDateTime.now());
+        section = sectionRepository.save(section);
+        return convertToDto(section);
     }
 
     @Transactional
     public SectionDto updateSection(UUID id, SectionDto sectionDto) {
-        SectionEntity existingSectionEntity = sectionRepository.findById(id)
+        Section existingSection = sectionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Section not found"));
 
-        existingSectionEntity.setName(sectionDto.getName());
-        existingSectionEntity.setMenuOrder(sectionDto.getMenuOrder());
-        existingSectionEntity.setUpdatedAt(LocalDateTime.now());
+        existingSection.setName(sectionDto.getName());
+        existingSection.setMenuOrder(sectionDto.getMenuOrder());
+        existingSection.setUpdatedAt(LocalDateTime.now());
 
-        existingSectionEntity = sectionRepository.save(existingSectionEntity);
-        return convertToDto(existingSectionEntity);
+        existingSection = sectionRepository.save(existingSection);
+        return convertToDto(existingSection);
     }
 
     @Transactional
@@ -75,23 +75,23 @@ public class SectionService {
         sectionRepository.deleteById(id);
     }
 
-    private SectionDto convertToDto(SectionEntity sectionEntity) {
+    private SectionDto convertToDto(Section section) {
         SectionDto dto = new SectionDto();
-        dto.setId(sectionEntity.getId());
-        dto.setUserId(sectionEntity.getUserId());
-        dto.setName(sectionEntity.getName());
-        dto.setMenuOrder(sectionEntity.getMenuOrder());
-        dto.setCreatedAt(sectionEntity.getCreatedAt());
-        dto.setUpdatedAt(sectionEntity.getUpdatedAt());
+        dto.setId(section.getId());
+        dto.setUserId(section.getUserId());
+        dto.setName(section.getName());
+        dto.setMenuOrder(section.getMenuOrder());
+        dto.setCreatedAt(section.getCreatedAt());
+        dto.setUpdatedAt(section.getUpdatedAt());
         return dto;
     }
 
-    private SectionEntity convertToEntity(SectionDto dto) {
-        SectionEntity sectionEntity = new SectionEntity();
-        sectionEntity.setId(dto.getId());
-        sectionEntity.setUserId(dto.getUserId());
-        sectionEntity.setName(dto.getName());
-        sectionEntity.setMenuOrder(dto.getMenuOrder());
-        return sectionEntity;
+    private Section convertToEntity(SectionDto dto) {
+        Section section = new Section();
+        section.setId(dto.getId());
+        section.setUserId(dto.getUserId());
+        section.setName(dto.getName());
+        section.setMenuOrder(dto.getMenuOrder());
+        return section;
     }
 }
