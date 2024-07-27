@@ -1,6 +1,7 @@
 package com.company.dms.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDate;
@@ -13,19 +14,19 @@ public class UserDto {
     @NotNull(message = "User ID is required")
     private UUID id;
 
-    @NotNull(message = "UserName is required")
+    @NotBlank(message = "UserName is required")
     private String username;
 
-    @NotNull(message = "Email is required")
+    @NotBlank(message = "Email is required")
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
 
-    @NotNull(message = "FirstName is required")
+    @NotBlank(message = "FirstName is required")
     private String firstName;
 
-    @NotNull(message = "LastName is required")
+    @NotBlank(message = "LastName is required")
     private String lastName;
 
     private String phoneNumber;

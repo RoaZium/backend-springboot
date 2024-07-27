@@ -1,5 +1,6 @@
 package com.company.dms.slide.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public class SlideDto {
 
     private UUID sectionId;
 
-    @NotNull(message = "Name is required")
+    @NotBlank(message = "Name is required")
     private String name;
 
     @NotNull(message = "MenuOrder is required")

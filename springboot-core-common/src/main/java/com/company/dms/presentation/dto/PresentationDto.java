@@ -1,5 +1,6 @@
 package com.company.dms.presentation.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public class PresentationDto {
     @NotNull(message = "User ID is required")
     private UUID userId;
 
-    @NotNull(message = "Name is required")
+    @NotBlank(message = "Name is required")
     private String name;
 
     private String description;

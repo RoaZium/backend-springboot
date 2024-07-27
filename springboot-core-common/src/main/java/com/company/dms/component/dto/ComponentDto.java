@@ -1,5 +1,6 @@
 package com.company.dms.component.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -15,10 +16,10 @@ public class ComponentDto {
     @NotNull(message = "Slide ID is required")
     private UUID slideId;
 
-    @NotNull(message = "Category is required")
+    @NotBlank(message = "Category is required")
     private String category;
 
-    @NotNull(message = "Name is required")
+    @NotBlank(message = "Name is required")
     private String name;
 
     private String propertiesJson;
