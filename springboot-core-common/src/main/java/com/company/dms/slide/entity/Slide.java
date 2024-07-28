@@ -1,16 +1,21 @@
 package com.company.dms.slide.entity;
 
+import com.company.dms.component.entity.Component;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "slide")
-@Data
+@Getter
+@Setter
 public class Slide {
 
     @Id
@@ -39,6 +44,9 @@ public class Slide {
     @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
     private String propertiesJson;
 
+    @OneToMany(mappedBy = "slide", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Component> components = new ArrayList<>();
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -46,4 +54,18 @@ public class Slide {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public void addComponent(Component component) {
+        if (component != null && !this.components.contains(component)) {
+            this.components.add(component);
+            component.setSlide(this);
+        }
+    }
+
+    public void removeComponent(Component component) {
+        if (component != null && this.components.contains(component)) {
+            this.components.remove(component);
+            component.setSlide(null);
+        }
+    }
 }

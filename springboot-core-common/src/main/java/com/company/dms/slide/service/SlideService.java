@@ -58,9 +58,7 @@ public class SlideService {
     }
 
     public SlideDto createSlide(SlideDto slideDto) {
-        if (!userRepository.existsById(slideDto.getUserId())) {
-            throw new RuntimeException("User not found");
-        }
+
         if (slideDto.getPresentationId() != null && !presentationRepository.existsById(slideDto.getPresentationId())) {
             throw new RuntimeException("Presentation not found");
         }

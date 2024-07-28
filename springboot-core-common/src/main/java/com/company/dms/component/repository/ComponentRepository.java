@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface ComponentRepository extends JpaRepository<Component, UUID> {
+
     List<Component> findBySlideId(UUID slideId);
     List<Component> findByCategory(String category);
     List<Component> findByNameContainingIgnoreCase(String name);
@@ -16,4 +17,5 @@ public interface ComponentRepository extends JpaRepository<Component, UUID> {
     List<Component> findBySlideIdAndNameContainingIgnoreCase(UUID slideId, String name);
     List<Component> findByCategoryAndNameContainingIgnoreCase(String category, String name);
     List<Component> findBySlideIdAndCategoryAndNameContainingIgnoreCase(UUID slideId, String category, String name);
+
 }
