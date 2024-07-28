@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:platform_develop}
+    username: ${DB_USERNAME:coever}
+    password: ${DB_PASSWORD:7N4F2<{mDs%7b3-.}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update

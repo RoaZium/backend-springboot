@@ -1,0 +1,13 @@
+server:
+  port: ${SERVER_PORT:38080}
+
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:mssql}
+
+springdoc:
+  swagger-ui:
+    path: /swagger
+    enabled: ${SWAGGER_UI_ENABLED:true}
+  api-docs:
+    path: /v3/api-docs
