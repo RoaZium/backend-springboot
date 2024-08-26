@@ -37,8 +37,8 @@ public class ComponentController {
 
     @GetMapping("/{id}")
     @Operation(summary = "컴포넌트 조회", description = "컴포넌트 ID로 컴포넌트 정보를 검색합니다.")
-    public ResponseEntity<ComponentDto> getComponent(@PathVariable UUID id) {
-        ComponentDto component = componentService.getComponent(id);
+    public ResponseEntity<ComponentDto> getComponentById(@PathVariable UUID id) {
+        ComponentDto component = componentService.getComponentById(id);
         return component != null ? ResponseEntity.ok(component) : ResponseEntity.notFound().build();
     }
 

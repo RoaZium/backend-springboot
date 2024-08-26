@@ -48,7 +48,7 @@ public class ComponentService {
         return components.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    public ComponentDto getComponent(UUID id) {
+    public ComponentDto getComponentById(UUID id) {
         return componentRepository.findById(id)
                 .map(this::convertToDto)
                 .orElse(null);
