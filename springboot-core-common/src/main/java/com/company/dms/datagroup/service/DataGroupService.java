@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,6 +45,17 @@ public class DataGroupService {
     @Transactional
     public DataGroupDto createDataGroup(DataGroupDto dataGroupDto) {
         DataGroup dataGroup = convertToEntity(dataGroupDto);
+
+        if (dataGroup.getId() == null) {
+            dataGroup.setId(UUID.randomUUID());
+        } else {
+            if (dataGroupRepository.existsById(dataGroup.getId())) {
+                throw new RuntimeException("DataGroup with this ID already exists");
+            }
+        }
+
+        dataGroup.setCreatedAt(LocalDateTime.now());
+        dataGroup.setUpdatedAt(LocalDateTime.now());
         DataGroup savedDataGroup = dataGroupRepository.save(dataGroup);
         return convertToDto(savedDataGroup);
     }
@@ -53,6 +65,7 @@ public class DataGroupService {
         return dataGroupRepository.findById(id)
                 .map(dataGroup -> {
                     updateDataGroupFromDto(dataGroup, dataGroupDto);
+                    dataGroup.setUpdatedAt(LocalDateTime.now());
                     DataGroup updatedDataGroup = dataGroupRepository.save(dataGroup);
                     return convertToDto(updatedDataGroup);
                 })
@@ -81,6 +94,7 @@ public class DataGroupService {
 
     private DataGroup convertToEntity(DataGroupDto dto) {
         DataGroup dataGroup = new DataGroup();
+        dataGroup.setId(dto.getId());
         dataGroup.setCode(dto.getCode());
         dataGroup.setName(dto.getName());
         dataGroup.setMenuOrder(dto.getMenuOrder());

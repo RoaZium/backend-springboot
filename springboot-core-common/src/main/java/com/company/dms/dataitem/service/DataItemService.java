@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -57,7 +58,20 @@ public class DataItemService {
         if (!dataGroupRepository.existsById(dataItemDto.getGroupId())) {
             throw new RuntimeException("DataGroup not found");
         }
+
         DataItem dataItem = convertToEntity(dataItemDto);
+
+        if (dataItem.getId() == null) {
+            dataItem.setId(UUID.randomUUID());
+        } else {
+            if (dataItemRepository.existsById(dataItem.getId())) {
+                throw new RuntimeException("DataItem with this ID already exists");
+            }
+        }
+
+        dataItem.setCreatedAt(LocalDateTime.now());
+        dataItem.setUpdatedAt(LocalDateTime.now());
+
         DataItem savedDataItem = dataItemRepository.save(dataItem);
         return convertToDto(savedDataItem);
     }
@@ -67,6 +81,7 @@ public class DataItemService {
         return dataItemRepository.findById(id)
                 .map(dataItem -> {
                     updateDataItemFromDto(dataItem, dataItemDto);
+                    dataItem.setUpdatedAt(LocalDateTime.now());
                     DataItem updatedDataItem = dataItemRepository.save(dataItem);
                     return convertToDto(updatedDataItem);
                 })
@@ -95,12 +110,14 @@ public class DataItemService {
     }
 
     private DataItem convertToEntity(DataItemDto dto) {
-        return new DataItem(
+        DataItem dataItem = new DataItem(
                 dto.getGroupId(),
                 dto.getCode(),
                 dto.getName(),
                 dto.getMenuOrder()
         );
+        dataItem.setId(dto.getId());
+        return dataItem;
     }
 
     private void updateDataItemFromDto(DataItem dataItem, DataItemDto dto) {
