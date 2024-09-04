@@ -63,10 +63,6 @@ public class DataItemService {
 
         if (dataItem.getId() == null) {
             dataItem.setId(UUID.randomUUID());
-        } else {
-            if (dataItemRepository.existsById(dataItem.getId())) {
-                throw new RuntimeException("DataItem with this ID already exists");
-            }
         }
 
         dataItem.setCreatedAt(LocalDateTime.now());

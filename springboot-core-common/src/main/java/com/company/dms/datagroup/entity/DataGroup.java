@@ -19,7 +19,7 @@ public class DataGroup {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "code", nullable = false, unique = true)
+    @Column(name = "code", nullable = false)
     private String code;
 
     @Column(name = "name", nullable = false)

@@ -48,10 +48,6 @@ public class DataGroupService {
 
         if (dataGroup.getId() == null) {
             dataGroup.setId(UUID.randomUUID());
-        } else {
-            if (dataGroupRepository.existsById(dataGroup.getId())) {
-                throw new RuntimeException("DataGroup with this ID already exists");
-            }
         }
 
         dataGroup.setCreatedAt(LocalDateTime.now());

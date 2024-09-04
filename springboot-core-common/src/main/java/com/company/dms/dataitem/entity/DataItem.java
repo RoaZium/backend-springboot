@@ -22,7 +22,7 @@ public class DataItem {
     @Column(name = "group_id", nullable = false)
     private UUID groupId;
 
-    @Column(name = "code", nullable = false, unique = true)
+    @Column(name = "code", nullable = false)
     private String code;
 
     @Column(name = "name", nullable = false)
