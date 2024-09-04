@@ -44,7 +44,7 @@ public class DataItemController {
 
     @PostMapping
     @Operation(summary = "데이터 아이템 생성", description = "새 데이터 아이템을 생성합니다.")
-    public ResponseEntity<DataItemDto> createDataItem(@Valid @RequestBody DataItemDto dataItemDto) {
+    public ResponseEntity<DataItemDto> createDataItem(@RequestBody DataItemDto dataItemDto) {
         DataItemDto createdDataItem = dataItemService.createDataItem(dataItemDto);
         return new ResponseEntity<>(createdDataItem, HttpStatus.CREATED);
     }
