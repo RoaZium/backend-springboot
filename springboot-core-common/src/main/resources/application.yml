@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:mssql}
+    active: ${SPRING_PROFILES_ACTIVE:mariadb}
 
 springdoc:
   swagger-ui:

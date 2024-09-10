@@ -41,7 +41,7 @@ public class Slide {
     @Column(name = "presentation_order")
     private Integer presentationOrder;
 
-    @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "properties_json", columnDefinition = "LONGTEXT")
     private String propertiesJson;
 
     @OneToMany(mappedBy = "slide", cascade = CascadeType.ALL, orphanRemoval = true)

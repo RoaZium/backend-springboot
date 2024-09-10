@@ -37,6 +37,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+	implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
 	implementation 'com.microsoft.sqlserver:mssql-jdbc'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
 	compileOnly 'org.projectlombok:lombok'

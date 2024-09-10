@@ -30,7 +30,7 @@ public class Component {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "properties_json", columnDefinition = "LONGTEXT")
     private String propertiesJson;
 
     @CreationTimestamp

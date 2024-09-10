@@ -27,10 +27,10 @@ public class Presentation {
     @Column(name = "menu_order", nullable = false)
     private int menuOrder;
 
-    @Column(name = "description", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
 
-    @Column(name = "properties_json", columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "properties_json", columnDefinition = "LONGTEXT")
     private String propertiesJson;
 
     @CreationTimestamp
