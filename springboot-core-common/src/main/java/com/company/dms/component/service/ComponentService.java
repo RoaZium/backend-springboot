@@ -3,7 +3,6 @@ package com.company.dms.component.service;
 import com.company.dms.component.dto.ComponentDto;
 import com.company.dms.component.entity.Component;
 import com.company.dms.component.repository.ComponentRepository;
-import com.company.dms.slide.repository.SlideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +15,10 @@ import java.util.stream.Collectors;
 public class ComponentService {
 
     private final ComponentRepository componentRepository;
-    private final SlideRepository slideRepository;
 
     @Autowired
-    public ComponentService(ComponentRepository componentRepository, SlideRepository slideRepository) {
+    public ComponentService(ComponentRepository componentRepository) {
         this.componentRepository = componentRepository;
-        this.slideRepository = slideRepository;
     }
 
     public List<ComponentDto> getComponents(UUID slideId, String category, String name) {
@@ -84,17 +81,18 @@ public class ComponentService {
     private ComponentDto convertToDto(Component component) {
         ComponentDto dto = new ComponentDto();
         dto.setId(component.getId());
-        dto.setSlideId(component.getSlide().getId());
+        dto.setSlideId(component.getSlideId());
         dto.setCategory(component.getCategory());
         dto.setName(component.getName());
         dto.setPropertiesJson(component.getPropertiesJson());
+        dto.setCreatedAt(component.getCreatedAt());
+        dto.setUpdatedAt(component.getUpdatedAt());
         return dto;
     }
 
     private Component convertToEntity(ComponentDto dto) {
         Component component = new Component();
-        component.setSlide(slideRepository.findById(dto.getSlideId())
-                .orElseThrow(() -> new RuntimeException("Slide not found")));
+        component.setSlideId(dto.getSlideId());
         component.setCategory(dto.getCategory());
         component.setName(dto.getName());
         component.setPropertiesJson(dto.getPropertiesJson());
@@ -102,10 +100,7 @@ public class ComponentService {
     }
 
     private void updateComponentFromDto(Component component, ComponentDto dto) {
-        if (!component.getSlide().getId().equals(dto.getSlideId())) {
-            component.setSlide(slideRepository.findById(dto.getSlideId())
-                    .orElseThrow(() -> new RuntimeException("Slide not found")));
-        }
+        component.setSlideId(dto.getSlideId());
         component.setCategory(dto.getCategory());
         component.setName(dto.getName());
         component.setPropertiesJson(dto.getPropertiesJson());

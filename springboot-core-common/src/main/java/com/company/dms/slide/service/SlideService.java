@@ -3,7 +3,6 @@ package com.company.dms.slide.service;
 import com.company.dms.slide.dto.SlideDto;
 import com.company.dms.slide.entity.Slide;
 import com.company.dms.slide.repository.SlideRepository;
-import com.company.dms.user.repository.UserRepository;
 import com.company.dms.presentation.repository.PresentationRepository;
 import com.company.dms.section.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,6 @@ import java.util.stream.Collectors;
 public class SlideService {
     @Autowired
     private SlideRepository slideRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private PresentationRepository presentationRepository;
@@ -58,7 +54,6 @@ public class SlideService {
     }
 
     public SlideDto createSlide(SlideDto slideDto) {
-
         if (slideDto.getPresentationId() != null && !presentationRepository.existsById(slideDto.getPresentationId())) {
             throw new RuntimeException("Presentation not found");
         }

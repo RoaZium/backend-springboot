@@ -20,9 +20,8 @@ public class Component {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "slide_id", nullable = false)
-    private Slide slide;
+    @Column(name = "slide_id", nullable = false)
+    private UUID slideId;
 
     @Column(name = "category", nullable = false, length = 20)
     private String category;
@@ -40,17 +39,4 @@ public class Component {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
-    public void setSlide(Slide slide) {
-        if (this.slide != slide) {
-            Slide oldSlide = this.slide;
-            this.slide = slide;
-            if (oldSlide != null) {
-                oldSlide.removeComponent(this);
-            }
-            if (slide != null) {
-                slide.addComponent(this);
-            }
-        }
-    }
 }

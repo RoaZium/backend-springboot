@@ -8,11 +8,11 @@ WORKDIR /app
 COPY build/libs/*.jar app.jar
 
 # Set environment variables
-ENV SPRING_PROFILES_ACTIVE=mssql
-ENV DB_HOST=192.168.50.155
-ENV DB_PORT=1433
+ENV SPRING_PROFILES_ACTIVE=mariadb
+ENV DB_HOST=192.168.10.169
+ENV DB_PORT=3306
 ENV DB_NAME=dms_db
-ENV DB_USERNAME=sa
+ENV DB_USERNAME=root
 ENV DB_PASSWORD=1
 
 # Expose the port the app runs on
