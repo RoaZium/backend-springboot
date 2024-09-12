@@ -46,10 +46,6 @@ public class SectionService {
 
     @Transactional
     public SectionDto createSection(SectionDto sectionDto) {
-        if (!userRepository.existsById(sectionDto.getUserId())) {
-            throw new RuntimeException("User not found");
-        }
-
         Section section = convertToEntity(sectionDto);
         section.setCreatedAt(LocalDateTime.now());
         section.setUpdatedAt(LocalDateTime.now());

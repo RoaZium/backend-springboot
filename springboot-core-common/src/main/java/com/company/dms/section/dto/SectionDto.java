@@ -15,22 +15,22 @@ public class SectionDto {
     private UUID id;
 
     @NotNull(message = "User ID is required")
-    @JsonProperty("userId")
+    @JsonProperty("UserId")
     private UUID userId;
 
     @NotBlank(message = "Name is required")
-    @JsonProperty("name")
+    @JsonProperty("Name")
     private String name;
 
     @NotNull(message = "MenuOrder is required")
-    @JsonProperty("menuOrder")
+    @JsonProperty("MenuOrder")
     private int menuOrder;
 
     @NotNull(message = "CreatedAt is required")
-    @JsonProperty("createdAt")
+    @JsonProperty("CreatedAt")
     private LocalDateTime createdAt;
 
     @NotNull(message = "UpdatedAt is required")
-    @JsonProperty("updatedAt")
+    @JsonProperty("UpdatedAt")
     private LocalDateTime updatedAt;
 }
