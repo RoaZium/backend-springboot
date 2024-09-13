@@ -76,24 +76,12 @@ public class SlideService {
         existingSlide.setMenuOrder(slideDto.getMenuOrder());
         existingSlide.setPresentationOrder(slideDto.getPresentationOrder());
         existingSlide.setPropertiesJson(slideDto.getPropertiesJson());
+        existingSlide.setSectionId(slideDto.getSectionId());
+        existingSlide.setPresentationId(slideDto.getPresentationId());
         existingSlide.setUpdatedAt(LocalDateTime.now());
 
-        if (slideDto.getPresentationId() != null && !slideDto.getPresentationId().equals(existingSlide.getPresentationId())) {
-            if (!presentationRepository.existsById(slideDto.getPresentationId())) {
-                throw new RuntimeException("Presentation not found");
-            }
-            existingSlide.setPresentationId(slideDto.getPresentationId());
-        }
-
-        if (slideDto.getSectionId() != null && !slideDto.getSectionId().equals(existingSlide.getSectionId())) {
-            if (!sectionRepository.existsById(slideDto.getSectionId())) {
-                throw new RuntimeException("Section not found");
-            }
-            existingSlide.setSectionId(slideDto.getSectionId());
-        }
-
-        existingSlide = slideRepository.save(existingSlide);
-        return convertToDto(existingSlide);
+        Slide updatedSlide = slideRepository.save(existingSlide);
+        return convertToDto(updatedSlide);
     }
 
     public void deleteSlide(UUID id) {
