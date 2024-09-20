@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'edu.sc.seis.launch4j' version '3.0.6'
 }
 
 group = 'com.company'
@@ -30,6 +31,25 @@ jar {
 bootJar {
 	enabled = true
 }
+
+launch4j {
+	mainClassName = 'com.company.Application' // 메인 클래스 이름
+	//icon = "${projectDir}/icons/myApp.ico" // 아이콘 파일 경로 (선택 사항)
+	outputDir = "${layout.buildDirectory.dir('launch4j').get().asFile}" // 출력 디렉토리
+	outfile = "DMSApi.exe" // 생성될 exe 파일 이름
+	headerType = 'console' // 콘솔 창 활성화
+}
+
+tasks.register('createExeTask', edu.sc.seis.launch4j.tasks.Launch4jLibraryTask) {
+	doLast {
+		copy {
+			from tasks.named('bootJar').get().archiveFile.get().asFile
+			into "${layout.buildDirectory.dir('launch4j').get().asFile}"
+			rename { 'springboot-core-common-0.0.1-SNAPSHOT.jar' }
+		}
+	}
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
