@@ -1,3 +1,5 @@
+import edu.sc.seis.launch4j.tasks.Launch4jLibraryTask
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
@@ -40,7 +42,7 @@ launch4j {
 	headerType = 'console' // 콘솔 창 활성화
 }
 
-tasks.register('createExeTask', edu.sc.seis.launch4j.tasks.Launch4jLibraryTask) {
+tasks.register('createExeTask', Launch4jLibraryTask) {
 	doLast {
 		copy {
 			from tasks.named('bootJar').get().archiveFile.get().asFile
@@ -49,7 +51,6 @@ tasks.register('createExeTask', edu.sc.seis.launch4j.tasks.Launch4jLibraryTask) 
 		}
 	}
 }
-
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
