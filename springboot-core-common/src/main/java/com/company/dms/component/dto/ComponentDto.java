@@ -27,23 +27,17 @@ public class ComponentDto {
     @JsonProperty("Name")
     private String name;
 
-    @JsonProperty("TextDataJson")
-    private String textDataJson;
+    @JsonProperty("ArrangeJson")
+    private String arrangeJson;
 
-    @JsonProperty("textEffectJson")
-    private String textEffectJson;
+    @JsonProperty("DataJson")
+    private String dataJson;
 
-    @JsonProperty("TextStyleJson")
-    private String textStyleJson;
+    @JsonProperty("StyleJson")
+    private String styleJson;
 
-    @JsonProperty("ShapeArrangementJson")
-    private String shapeArrangementJson;
-
-    @JsonProperty("ShapeEffectJson")
-    private String shapeEffectJson;
-
-    @JsonProperty("ShapeStyleJson")
-    private String shapeStyleJson;
+    @JsonProperty("TextJson")
+    private String textJson;
 
     @NotNull(message = "CreatedAt is required")
     @JsonProperty("CreatedAt")

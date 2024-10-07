@@ -85,12 +85,10 @@ public class ComponentService {
         dto.setSlideId(component.getSlideId());
         dto.setCategory(component.getCategory());
         dto.setName(component.getName());
-        dto.setTextDataJson(component.getTextDataJson());
-        dto.setTextEffectJson(component.getTextEffectJson());
-        dto.setTextStyleJson(component.getTextStyleJson());
-        dto.setShapeArrangementJson(component.getShapeArrangementJson());
-        dto.setShapeEffectJson(component.getShapeEffectJson());
-        dto.setShapeStyleJson(component.getShapeStyleJson());
+        dto.setArrangeJson(component.getArrangeJson());
+        dto.setDataJson(component.getDataJson());
+        dto.setStyleJson(component.getStyleJson());
+        dto.setTextJson(component.getTextJson());
         dto.setCreatedAt(component.getCreatedAt());
         dto.setUpdatedAt(component.getUpdatedAt());
         return dto;
@@ -101,12 +99,10 @@ public class ComponentService {
         component.setSlideId(dto.getSlideId());
         component.setCategory(dto.getCategory());
         component.setName(dto.getName());
-        component.setTextDataJson(dto.getTextDataJson());
-        component.setTextEffectJson(dto.getTextEffectJson());
-        component.setTextStyleJson(dto.getTextStyleJson());
-        component.setShapeArrangementJson(dto.getShapeArrangementJson());
-        component.setShapeEffectJson(dto.getShapeEffectJson());
-        component.setShapeStyleJson(dto.getShapeStyleJson());
+        component.setArrangeJson(dto.getArrangeJson());
+        component.setDataJson(dto.getDataJson());
+        component.setStyleJson(dto.getStyleJson());
+        component.setTextJson(dto.getTextJson());
         return component;
     }
 
@@ -114,11 +110,9 @@ public class ComponentService {
         component.setSlideId(dto.getSlideId());
         component.setCategory(dto.getCategory());
         component.setName(dto.getName());
-        component.setTextDataJson(dto.getTextDataJson());
-        component.setTextEffectJson(dto.getTextEffectJson());
-        component.setTextStyleJson(dto.getTextStyleJson());
-        component.setShapeArrangementJson(dto.getShapeArrangementJson());
-        component.setShapeEffectJson(dto.getShapeEffectJson());
-        component.setShapeStyleJson(dto.getShapeStyleJson());
+        component.setArrangeJson(dto.getArrangeJson());
+        component.setDataJson(dto.getDataJson());
+        component.setStyleJson(dto.getStyleJson());
+        component.setTextJson(dto.getTextJson());
     }
 }

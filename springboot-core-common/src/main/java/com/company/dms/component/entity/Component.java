@@ -29,23 +29,17 @@ public class Component {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "text_data_json", columnDefinition = "LONGTEXT")
-    private String textDataJson;
+    @Column(name = "arrange_json", columnDefinition = "LONGTEXT")
+    private String arrangeJson;
 
-    @Column(name = "text_effect_json", columnDefinition = "LONGTEXT")
-    private String textEffectJson;
+    @Column(name = "data_json", columnDefinition = "LONGTEXT")
+    private String dataJson;
 
-    @Column(name = "text_style_json", columnDefinition = "LONGTEXT")
-    private String textStyleJson;
+    @Column(name = "style_json", columnDefinition = "LONGTEXT")
+    private String styleJson;
 
-    @Column(name = "shape_arrangement_json", columnDefinition = "LONGTEXT")
-    private String shapeArrangementJson;
-
-    @Column(name = "shape_effect_json", columnDefinition = "LONGTEXT")
-    private String shapeEffectJson;
-
-    @Column(name = "shape_style_json", columnDefinition = "LONGTEXT")
-    private String shapeStyleJson;
+    @Column(name = "text_json", columnDefinition = "LONGTEXT")
+    private String textJson;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

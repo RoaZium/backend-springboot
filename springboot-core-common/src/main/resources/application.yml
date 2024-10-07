@@ -11,3 +11,15 @@ springdoc:
     enabled: ${SWAGGER_UI_ENABLED:true}
   api-docs:
     path: /v3/api-docs
+
+logging:
+  level:
+    root: WARN
+    org.springframework: INFO
+    com.company: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/application.log
+    max-size: 10MB
+    max-history: 5
