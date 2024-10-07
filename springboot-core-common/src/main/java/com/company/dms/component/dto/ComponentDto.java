@@ -12,38 +12,38 @@ import java.util.UUID;
 public class ComponentDto {
 
     @NotNull(message = "Component ID is required")
-    @JsonProperty("Id")
+    @JsonProperty("id")
     private UUID id;
 
     @NotNull(message = "Slide ID is required")
-    @JsonProperty("SlideId")
+    @JsonProperty("slideId")
     private UUID slideId;
 
     @NotBlank(message = "Category is required")
-    @JsonProperty("Category")
+    @JsonProperty("category")
     private String category;
 
     @NotBlank(message = "Name is required")
-    @JsonProperty("Name")
+    @JsonProperty("name")
     private String name;
 
-    @JsonProperty("ArrangeJson")
+    @JsonProperty("arrangeJson")
     private String arrangeJson;
 
-    @JsonProperty("DataJson")
+    @JsonProperty("dataJson")
     private String dataJson;
 
-    @JsonProperty("StyleJson")
+    @JsonProperty("styleJson")
     private String styleJson;
 
-    @JsonProperty("TextJson")
+    @JsonProperty("textJson")
     private String textJson;
 
     @NotNull(message = "CreatedAt is required")
-    @JsonProperty("CreatedAt")
+    @JsonProperty("createdAt")
     private LocalDateTime createdAt;
 
     @NotNull(message = "UpdatedAt is required")
-    @JsonProperty("UpdatedAt")
+    @JsonProperty("updatedAt")
     private LocalDateTime updatedAt;
 }
