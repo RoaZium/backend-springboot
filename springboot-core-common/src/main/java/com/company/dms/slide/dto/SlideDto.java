@@ -11,38 +11,38 @@ import java.util.UUID;
 public class SlideDto {
 
     @NotNull(message = "Slide ID is required")
-    @JsonProperty("Id")
+    @JsonProperty("id")
     private UUID id;
 
     @NotNull(message = "User ID is required")
-    @JsonProperty("UserId")
+    @JsonProperty("userId")
     private UUID userId;
 
-    @JsonProperty("PresentationId")
+    @JsonProperty("presentationId")
     private UUID presentationId;
 
-    @JsonProperty("SectionId")
+    @JsonProperty("sectionId")
     private UUID sectionId;
 
     @NotBlank(message = "Name is required")
-    @JsonProperty("Name")
+    @JsonProperty("name")
     private String name;
 
     @NotNull(message = "MenuOrder is required")
-    @JsonProperty("MenuOrder")
+    @JsonProperty("menuOrder")
     private int menuOrder;
 
-    @JsonProperty("PresentationOrder")
+    @JsonProperty("presentationOrder")
     private Integer presentationOrder;
 
-    @JsonProperty("PropertiesJson")
+    @JsonProperty("propertiesJson")
     private String propertiesJson;
 
     @NotNull(message = "CreatedAt is required")
-    @JsonProperty("CreatedAt")
+    @JsonProperty("createdAt")
     private LocalDateTime createdAt;
 
     @NotNull(message = "UpdatedAt is required")
-    @JsonProperty("UpdatedAt")
+    @JsonProperty("updatedAt")
     private LocalDateTime updatedAt;
 }

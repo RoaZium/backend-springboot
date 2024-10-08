@@ -75,7 +75,7 @@ public class UserService {
     private UserDto convertToDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
-        dto.setUsername(user.getUsername());
+        dto.setUserName(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
@@ -89,7 +89,7 @@ public class UserService {
 
     private User convertToEntity(UserDto dto) {
         User user = new User();
-        user.setUsername(dto.getUsername());
+        user.setUsername(dto.getUserName());
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
@@ -100,7 +100,7 @@ public class UserService {
     }
 
     private void updateUserFromDto(User user, UserDto dto) {
-        user.setUsername(dto.getUsername());
+        user.setUsername(dto.getUserName());
         user.setEmail(dto.getEmail());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());

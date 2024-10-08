@@ -12,26 +12,26 @@ import java.util.UUID;
 public class DataGroupDto {
 
     @NotNull(message = "DataGroup ID is required")
-    @JsonProperty("Id")
+    @JsonProperty("id")
     private UUID id;
 
     @NotBlank(message = "Code is required")
-    @JsonProperty("Code")
+    @JsonProperty("code")
     private String code;
 
     @NotBlank(message = "Name is required")
-    @JsonProperty("Name")
+    @JsonProperty("name")
     private String name;
 
     @NotNull(message = "MenuOrder is required")
-    @JsonProperty("MenuOrder")
+    @JsonProperty("menuOrder")
     private Integer menuOrder;
 
     @NotNull(message = "CreatedAt is required")
-    @JsonProperty("CreatedAt")
+    @JsonProperty("createdAt")
     private LocalDateTime createdAt;
 
     @NotNull(message = "UpdatedAt is required")
-    @JsonProperty("UpdatedAt")
+    @JsonProperty("updatedAt")
     private LocalDateTime updatedAt;
 }

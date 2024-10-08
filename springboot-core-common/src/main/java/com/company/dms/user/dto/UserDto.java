@@ -14,14 +14,17 @@ import java.util.UUID;
 public class UserDto {
 
     @NotNull(message = "User ID is required")
+    @JsonProperty("id")
     private UUID id;
 
     @NotBlank(message = "UserName is required")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    private String username;
+    @JsonProperty("userName")
+    private String userName;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
+    @JsonProperty("email")
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -29,24 +32,32 @@ public class UserDto {
 
     @NotBlank(message = "FirstName is required")
     @Size(max = 50, message = "First name must not exceed 50 characters")
+    @JsonProperty("firstName")
     private String firstName;
 
     @NotBlank(message = "LastName is required")
     @Size(max = 50, message = "Last name must not exceed 50 characters")
+    @JsonProperty("lastName")
     private String lastName;
 
     @Size(max = 20, message = "Phone number must not exceed 20 characters")
+    @JsonProperty("phoneNumber")
     private String phoneNumber;
 
+    @JsonProperty("birthDate")
     private LocalDate birthDate;
 
+    @JsonProperty("isActive")
     private boolean isActive;
 
+    @JsonProperty("lastLoginAt")
     private LocalDateTime lastLoginAt;
 
     @NotNull(message = "CreatedAt is required")
+    @JsonProperty("createdAt")
     private LocalDateTime createdAt;
 
     @NotNull(message = "UpdatedAt is required")
+    @JsonProperty("updatedAt")
     private LocalDateTime updatedAt;
 }

@@ -11,26 +11,26 @@ import java.util.UUID;
 public class SectionDto {
 
     @NotNull(message = "Section ID is required")
-    @JsonProperty("Id")
+    @JsonProperty("id")
     private UUID id;
 
     @NotNull(message = "User ID is required")
-    @JsonProperty("UserId")
+    @JsonProperty("userId")
     private UUID userId;
 
     @NotBlank(message = "Name is required")
-    @JsonProperty("Name")
+    @JsonProperty("name")
     private String name;
 
     @NotNull(message = "MenuOrder is required")
-    @JsonProperty("MenuOrder")
+    @JsonProperty("menuOrder")
     private int menuOrder;
 
     @NotNull(message = "CreatedAt is required")
-    @JsonProperty("CreatedAt")
+    @JsonProperty("createdAt")
     private LocalDateTime createdAt;
 
     @NotNull(message = "UpdatedAt is required")
-    @JsonProperty("UpdatedAt")
+    @JsonProperty("updatedAt")
     private LocalDateTime updatedAt;
 }
