@@ -53,6 +53,10 @@ public class ComponentService {
 
     @Transactional
     public ComponentDto createComponent(ComponentDto componentDto) {
+        if (componentDto.getId() == null) {
+            componentDto.setId(UUID.randomUUID());
+        }
+
         Component component = convertToEntity(componentDto);
         Component savedComponent = componentRepository.save(component);
         return convertToDto(savedComponent);
@@ -96,6 +100,7 @@ public class ComponentService {
 
     private Component convertToEntity(ComponentDto dto) {
         Component component = new Component();
+        component.setId(dto.getId());
         component.setSlideId(dto.getSlideId());
         component.setCategory(dto.getCategory());
         component.setName(dto.getName());
