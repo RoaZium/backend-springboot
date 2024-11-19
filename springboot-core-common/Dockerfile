@@ -9,7 +9,7 @@ COPY build/libs/*.jar app.jar
 
 # Set environment variables
 ENV SPRING_PROFILES_ACTIVE=mariadb
-ENV DB_HOST=192.168.10.169
+ENV DB_HOST=127.0.0.1
 ENV DB_PORT=3306
 ENV DB_NAME=dms_db
 ENV DB_USERNAME=root
