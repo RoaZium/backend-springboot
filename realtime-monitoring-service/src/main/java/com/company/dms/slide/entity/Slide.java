@@ -1,4 +1,4 @@
-package com.company.dms.component.entity;
+package com.company.dms.slide.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,34 +10,36 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "component")
+@Table(name = "slide")
 @Getter
 @Setter
-public class Component {
+public class Slide {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "slide_id", nullable = false)
-    private UUID slideId;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
-    @Column(name = "category", nullable = false, length = 20)
-    private String category;
+    @Column(name = "presentation_id")
+    private UUID presentationId;
+
+    @Column(name = "section_id")
+    private UUID sectionId;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "arrange_json", columnDefinition = "LONGTEXT")
-    private String arrangeJson;
+    @Column(name = "menu_order", nullable = false)
+    private int menuOrder;
 
-    @Column(name = "data_json", columnDefinition = "LONGTEXT")
-    private String dataJson;
+    @Column(name = "presentation_order")
+    private Integer presentationOrder;
 
-    @Column(name = "style_json", columnDefinition = "LONGTEXT")
-    private String styleJson;
-
-    @Column(name = "text_json", columnDefinition = "LONGTEXT")
-    private String textJson;
+    @Column(name = "properties_json", columnDefinition = "LONGTEXT")
+    private String propertiesJson;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

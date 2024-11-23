@@ -42,7 +42,7 @@ launch4j {
 	dontWrapJar = true // JAR 파일을 포함하지 않음
 }
 
-tasks.register('createExeTask', edu.sc.seis.launch4j.tasks.Launch4jLibraryTask) {
+tasks.register('createExeTask', Launch4jLibraryTask) {
 	dependsOn tasks.named('bootJar')
 }
 
