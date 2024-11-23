@@ -16,7 +16,7 @@ ENV DB_USERNAME=root
 ENV DB_PASSWORD=1
 
 # Expose the port the app runs on
-EXPOSE 38080
+EXPOSE 8082
 
 # Run the jar file
 ENTRYPOINT ["java","-jar","app.jar"]
