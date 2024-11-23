@@ -11,19 +11,7 @@ import java.util.Scanner;
 @SpringBootApplication
 @RestController
 public class Main {
-
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-
-        // 사용자 입력을 기다리는 스레드 추가
-        Thread inputThread = new Thread(() -> {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Press Enter to exit...");
-            scanner.nextLine();
-            System.exit(0);
-        });
-
-        inputThread.setDaemon(true); // 메인 스레드 종료 시 함께 종료되도록 설정
-        inputThread.start();
     }
 }
