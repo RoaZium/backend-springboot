@@ -37,7 +37,7 @@ bootJar {
 launch4j {
     mainClassName = 'com.company.Main' // 메인 클래스 이름
     outputDir = "${buildDir}/DMS" // DMS 폴더에 직접 출력
-    outfile = "DMSApi.exe" // exe 파일 이름
+    outfile = "DMSapi.exe" // exe 파일 이름
     headerType = 'console' // 콘솔 창 활성화
     dontWrapJar = true // JAR 파일을 포함하지 않음
 }
