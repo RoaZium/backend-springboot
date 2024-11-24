@@ -21,14 +21,6 @@
           </set>
         </option>
       </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/springboot-core-common" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/springboot-core-common" />
-          </set>
-        </option>
-      </GradleProjectSettings>
     </option>
   </component>
 </project>
