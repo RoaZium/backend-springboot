@@ -8,16 +8,13 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.32/17d46b3e205515e1e8efd3ee4d57ce8018914163/lombok-1.18.32.jar" />
         </processorPath>
-        <module name="analysis-monitoring-service.main" />
+        <module name="realtime-monitoring-service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="springboot-common" target="17" />
       <module name="springboot-common.main" target="17" />
       <module name="springboot-common.test" target="17" />
-      <module name="springboot-core-common" target="17" />
-      <module name="springboot-core-common.main" target="17" />
-      <module name="springboot-core-common.test" target="17" />
       <module name="springboot-core-common_main" target="17" />
       <module name="springboot-core-common_test" target="17" />
     </bytecodeTargetLevel>
