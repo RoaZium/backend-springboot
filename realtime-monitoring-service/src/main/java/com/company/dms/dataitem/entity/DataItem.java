@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,9 @@ public class DataItem {
     @Column(name = "menu_order", nullable = false)
     private Integer menuOrder;
 
+    @Column(name = "datasource_properties", columnDefinition = "LONGTEXT")
+    private String datasourceProperties;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -45,10 +49,11 @@ public class DataItem {
     public DataItem() {
     }
 
-    public DataItem(UUID groupId, String code, String name, Integer menuOrder) {
+    public DataItem(UUID groupId, String code, String name, Integer menuOrder, String datasourceProperties) {
         this.groupId = groupId;
         this.code = code;
         this.name = name;
         this.menuOrder = menuOrder;
+        this.datasourceProperties = datasourceProperties;
     }
 }

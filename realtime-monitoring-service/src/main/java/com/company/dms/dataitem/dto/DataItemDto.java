@@ -31,6 +31,9 @@ public class DataItemDto {
     @JsonProperty("menuOrder")
     private Integer menuOrder;
 
+    @JsonProperty("datasourceProperties")
+    private String datasourceProperties;
+
     @NotNull(message = "CreatedAt is required")
     @JsonProperty("createdAt")
     private LocalDateTime createdAt;

@@ -100,6 +100,7 @@ public class DataItemService {
         dto.setCode(dataItem.getCode());
         dto.setName(dataItem.getName());
         dto.setMenuOrder(dataItem.getMenuOrder());
+        dto.setDatasourceProperties(dataItem.getDatasourceProperties());
         dto.setCreatedAt(dataItem.getCreatedAt());
         dto.setUpdatedAt(dataItem.getUpdatedAt());
         return dto;
@@ -110,7 +111,8 @@ public class DataItemService {
                 dto.getGroupId(),
                 dto.getCode(),
                 dto.getName(),
-                dto.getMenuOrder()
+                dto.getMenuOrder(),
+                dto.getDatasourceProperties()
         );
         dataItem.setId(dto.getId());
         return dataItem;
@@ -126,5 +128,6 @@ public class DataItemService {
         dataItem.setCode(dto.getCode());
         dataItem.setName(dto.getName());
         dataItem.setMenuOrder(dto.getMenuOrder());
+        dataItem.setDatasourceProperties(dto.getDatasourceProperties());
     }
 }
