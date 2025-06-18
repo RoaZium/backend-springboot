@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mariadb://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:dms_db}
-    username: ${DB_USERNAME:owell}
-    password: ${DB_PASSWORD:owell1234!}
+    username: ${DB_USERNAME:coever}
+    password: ${DB_PASSWORD:7N4F2<{mDs%7b3-.}
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MariaDBDialect
