@@ -42,8 +42,14 @@ launch4j {
     dontWrapJar = true // JAR 파일을 포함하지 않음
 }
 
+task copyConfig(type: Copy) {
+    from 'src/main/resources/db/dbconfig.properties'
+    into "${buildDir}/DMS"
+}
+
 tasks.register('createExeTask', Launch4jLibraryTask) {
     dependsOn tasks.named('bootJar')
+    finalizedBy copyConfig
 }
 
 tasks.named('build') {
