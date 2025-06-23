@@ -8,25 +8,23 @@ import java.util.Properties;
 public class DBConfig {
 
     public static void loadConfig() throws Exception {
-        // Docker 환경 체크
         if (Files.exists(Paths.get("/.dockerenv")) || System.getenv("DOCKER_CONTAINER") != null) {
             System.out.println("Docker 환경 - application.yml 사용");
             return;
         }
 
-        // exe 환경에서만 외부 설정 파일 로드
         if (!Files.exists(Paths.get("dbconfig.properties"))) {
             System.out.println("개발 환경 - application.yml 사용");
             return;
         }
 
-        // 외부 설정 파일 로드
         Properties prop = new Properties();
         try (FileInputStream fis = new FileInputStream("dbconfig.properties")) {
             prop.load(fis);
         }
 
         String dbType = prop.getProperty("db.type", "mariadb").toLowerCase();
+        System.setProperty("spring.profiles.active", dbType); // 프로파일 동적 설정
 
         if ("mariadb".equals(dbType)) {
             System.setProperty("spring.datasource.url", prop.getProperty("db.url.mariadb"));
