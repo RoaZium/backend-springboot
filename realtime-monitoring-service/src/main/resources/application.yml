@@ -9,6 +9,8 @@ springdoc:
   swagger-ui:
     path: /swagger
     enabled: ${SWAGGER_UI_ENABLED:true}
+    tags-sorter: alpha
+    operations-sorter: alpha
   api-docs:
     path: /v3/api-docs
 
