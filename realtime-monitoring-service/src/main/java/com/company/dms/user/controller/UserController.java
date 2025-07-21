@@ -27,13 +27,13 @@ public class UserController {
     @GetMapping
     @Operation(summary = "전체 사용자 조회", description = "옵션 필터를 사용하여 사용자 목록을 조회합니다.")
     public ResponseEntity<List<UserDto>> getUsers(
-            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String userName,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) Boolean isActive) {
-        List<UserDto> users = userService.getUsers(username, email, firstName, lastName, phoneNumber, isActive);
+        List<UserDto> users = userService.getUsers(userName, email, firstName, lastName, phoneNumber, isActive);
         return ResponseEntity.ok(users);
     }
 
