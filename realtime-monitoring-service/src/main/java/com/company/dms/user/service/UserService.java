@@ -20,19 +20,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+
     public List<UserDto> getUsers(String username, String email, String firstName, String lastName, String phoneNumber, Boolean isActive) {
         List<User> userEntities;
 
         if (username != null) {
-            userEntities = userRepository.findByUsernameContainingIgnoreCase(username);
+            userEntities = userRepository.findByUsernameIgnoreCase(username);
         } else if (email != null) {
-            userEntities = userRepository.findByEmailContainingIgnoreCase(email);
+            userEntities = userRepository.findByEmailIgnoreCase(email);
         } else if (firstName != null) {
-            userEntities = userRepository.findByFirstNameContainingIgnoreCase(firstName);
+            userEntities = userRepository.findByFirstNameIgnoreCase(firstName);
         } else if (lastName != null) {
-            userEntities = userRepository.findByLastNameContainingIgnoreCase(lastName);
+            userEntities = userRepository.findByLastNameIgnoreCase(lastName);
         } else if (phoneNumber != null) {
-            userEntities = userRepository.findByPhoneNumberContaining(phoneNumber);
+            userEntities = userRepository.findByPhoneNumber(phoneNumber);
         } else if (isActive != null) {
             userEntities = userRepository.findByIsActive(isActive);
         } else {
@@ -76,6 +77,7 @@ public class UserService {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setUserName(user.getUsername());
+        dto.setPasswordHash(user.getPasswordHash());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());

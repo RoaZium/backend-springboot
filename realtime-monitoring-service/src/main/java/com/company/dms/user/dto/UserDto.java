@@ -28,7 +28,7 @@ public class UserDto {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty("passwordHash")
     private String passwordHash;
 
     @NotBlank(message = "FirstName is required")
